@@ -80,15 +80,18 @@ namespace Calculatrice::Utils
 		return final;
 	}
 
+	bool vectorIncludes(std::vector<int> vect, int key)
+	{
+		return std::count(vect.begin(), vect.end(), key);
+	}
+
 	//	Indique si un certain vecteur inclut un certain élément.
 	//
 	//
 	bool vectorIncludes(std::vector<std::string> vect, std::string key)
 	{
 		// Si vect contient key, la fonction renvoie true. Sinon, elle renvoie false.
-		return std::count(vect.begin(), vect.end(), key)
-			? true
-			: false;
+		return std::count(vect.begin(), vect.end(), key);
 	}
 
 	int firstIndexInVector(std::vector<std::string> vect, std::string key)
@@ -128,7 +131,8 @@ namespace Calculatrice::Utils
 
 		for (int i = closedParentheses.back(); i >= openParentheses.back() && i >= closedParentheses.front(); i--)
 		{
-			closedParenthese = i;
+			if (vectorIncludes(closedParentheses, i))
+				closedParenthese = i;
 		}
 
 		return { openParenthese, closedParenthese };

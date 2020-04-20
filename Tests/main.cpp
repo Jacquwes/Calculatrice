@@ -4,5 +4,5 @@
 
 int main(int argc, char** argv)
 {
-	std::cout << Calculatrice::Core::solve("(5+2)*6");
+	std::cout << Calculatrice::Core::solve("(5+2)*(6+2)*2");
 }

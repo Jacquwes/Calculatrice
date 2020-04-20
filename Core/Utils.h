@@ -7,6 +7,7 @@ namespace Calculatrice::Utils
 {
 	std::vector<std::string> splitString(std::string text, std::vector<std::string> delimiters);
 
+	bool vectorIncludes(std::vector<int> vector, int key);
 	bool vectorIncludes(std::vector<std::string> vector, std::string key);
 
 	int firstIndexInVector(std::vector<std::string> vector, std::string key);
