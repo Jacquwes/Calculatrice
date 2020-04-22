@@ -5,19 +5,59 @@
 
 namespace Calculatrice::Utils
 {
+	//	Retourne un vector constitué de strings créés à partir d'une valeur string scindé en
+	//	fonction de séparateur(s). Cette fonction sera utilisée pour séparer les nombres des
+	//	opérateurs d'un calcul donné.
+	//
+	//
+	//	Params :
+	//		string text					: String à scinder
+	//		vector<string>	delimiters	: Liste de délimiteurs
 	std::vector<std::string> splitString(std::string text, std::vector<std::string> delimiters);
 
+	//	Indique si un vector donné contient ou non une certaine valeur.
+	//
+	//
+	//	Params :
+	//		vector<...> vector	: Vector à inspecter
+	//		...	key				: Valeur à trouver
 	bool vectorIncludes(std::vector<int> vector, int key);
 	bool vectorIncludes(std::vector<std::string> vector, std::string key);
 
+	//	Retourne l'index de la première fois qu'une valeur apparaît dans un vector.
+	//
+	//
+	//	Params :
+	//		vector<string> vector	: Vector à inspecter
+	//		string key				: Valeur à trouver
 	int firstIndexInVector(std::vector<std::string> vector, std::string key);
 
+	//	Retourne une liste de tous les index d'une valeur dans un vector.
+	//
+	//
+	//  Params :
+	//		vector<string> vector	: Vector à inspecter
+	//		string key				: Valeur à trouver
 	std::vector<int> indexesInVector(std::vector<std::string> vector, std::string key);
 
+	//	Permet d'encadrer des suites d'opérations du même type entre parenthèses.
+	//		Exemple : 5+9*5*7 -> 5+(9*5*7)
+	//
+	//
+	//	Params :
+	//		vector<string> expression	: Expression à manipuler
+	//		string operation			: Opérations à encadrer
 	std::vector<std::string> frameAlignedOperations(std::vector<std::string> expression, std::string operation);
+
+	//	Retourne les index des parenthèses ouvrantes et fermantes les plus intérieures d'un expression.
+	//
+	//
+	//  Params :
+	//		vector<string> expression	: Expression à évaluer
 	std::vector<int> findDeepestExpression(std::vector<std::string> exression);
 
 	namespace Constants {
+		//	Délimiteurs utilisés pour sérialiser les expressions.
 		inline std::vector<std::string> delimiters = {
 			"+", "-", "*", "/", "(", ")", "^"
 		};

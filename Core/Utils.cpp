@@ -6,29 +6,6 @@
 
 namespace Calculatrice::Utils
 {
-	//	Retourne un vector constitué de strings créés à partir d'une valeur string scindé en
-	//	fonction de séparateur(s). Cette fonction sera utilisée pour séparer les nombres des
-	//	opérateurs d'un calcul donné.
-	//
-	//
-	//	Params :
-	//		string text					: String à scinder
-	//		vector<string>	delimiters	: Liste de délimiteurs
-	//
-	//
-	//	Exemple d'utilisation :
-	//		Pour transformer la valeur string :
-	//			"(21+45)*98"
-	//		En :
-	//			{ "(", "21", "+", "45", ")", "*", "98" }		(Représentation sous forme d'array)
-	//
-	//		On utilise :
-	//			utils::splitString("(21+45)*98", vector<string>({"+", "*", "(", ")"}));
-	//
-	//
-	//	Retourne :
-	//		Vector constitué de strings créés à partir d'un valeur string scindé en
-	//		fonction de séparateur(s).
 	std::vector<std::string> splitString(std::string text, std::vector<std::string> delimiters)
 	{
 		//définition des objets utilisés par la fonction
@@ -82,25 +59,26 @@ namespace Calculatrice::Utils
 
 	bool vectorIncludes(std::vector<int> vect, int key)
 	{
+		// Si le vector contient au moins une fois key, alors la fonction retournera true.
 		return std::count(vect.begin(), vect.end(), key);
 	}
 
-	//	Indique si un certain vecteur inclut un certain élément.
-	//
-	//
 	bool vectorIncludes(std::vector<std::string> vect, std::string key)
 	{
-		// Si vect contient key, la fonction renvoie true. Sinon, elle renvoie false.
 		return std::count(vect.begin(), vect.end(), key);
 	}
 
 	int firstIndexInVector(std::vector<std::string> vect, std::string key)
 	{
+		// Index par défaut.
 		int index = 0;
+		// S'exécute sur chaque élément du vector.
 		for (auto& character : vect)
 		{
+			// Si la clé est correspondante au caractère actuel, alors on sort de la boucle.
 			if (character == key)
 				break;
+			// Sinon, index est incrémenté.
 			index++;
 		}
 
@@ -109,12 +87,16 @@ namespace Calculatrice::Utils
 
 	std::vector<int> indexesInVector(std::vector<std::string> vect, std::string key)
 	{
+		// Vector contenant tous les index.
 		std::vector<int> result;
 
+		// S'exécute tant que le vector contient la clé
 		while (Calculatrice::Utils::vectorIncludes(vect, key))
 		{
+			// Ajoute le premier index à la liste
 			int index = firstIndexInVector(vect, key);
 			result.push_back(index);
+			// Puis le supprime du vector
 			vect[index] = "";
 		}
 
@@ -123,28 +105,28 @@ namespace Calculatrice::Utils
 
 	std::vector<std::string> frameAlignedOperations(std::vector<std::string> expression, std::string operation)
 	{
-		// trouver le premier index de *
-		// mettre une parenthèse devant
-		// trouver le deuxieme index de *
-		// si ils se suivent
-			// on continue
-		// sinon on met une parenthèse derrière
-		std::vector<std::string> newExpression{};
+		// Contient tous les index de l'opérateur en question
 		std::vector<int> indexes = indexesInVector(expression, operation);
-
+		
+		// S'exécute pour chaque opérateur
 		for (int i = 0; i < indexes.size(); i++)
 		{
 			indexes = indexesInVector(expression, operation);
 			int index = indexes[i];
+			// Si c'est le premier opérateur
 			if (i == 0)
 				expression.insert(expression.begin() + index - 1, "(");
+			// Si celui le précédant était différent
 			else if (expression[static_cast<size_t>(index) - 2] != operation)
 				expression.insert(expression.begin() + index - 1, "(");
 
+			// Mise à jour des index, car ils peuvent avoir été modifiés juste au dessus.
 			indexes = indexesInVector(expression, operation);
 			index = indexes[i];
+			// Si c'est le dernier opérateur
 			if (i == indexes.size() - 1)
 				expression.insert(expression.begin() + index + 2, ")");
+			// Si le suivant est différent
 			else if (expression[static_cast<size_t>(index) + 2] != operation)
 					expression.insert(expression.begin() + index + 2, ")");
 		}
@@ -157,11 +139,14 @@ namespace Calculatrice::Utils
 		std::vector<int> openParentheses = indexesInVector(expression, "(");
 		std::vector<int> closedParentheses = indexesInVector(expression, ")");
 
+		// La dernière parenthèse ouverte est forcément la plus intérieure.
 		int openParenthese = openParentheses.back();
 		int closedParenthese{};
 
-		for (int i = closedParentheses.back(); i >= openParentheses.back() && i >= closedParentheses.front(); i--)
+		// S'exécute sur tous les caractères de l'expression en partant de la gauche, jusqu'à la dernière parenthèse ouverte.
+		for (int i = closedParentheses.back(); i >= openParenthese && i >= closedParentheses.front(); i--)
 		{
+			// Si le le caractère est une parenthèse fermante, alors closedParenthese est assigné à son index.
 			if (vectorIncludes(closedParentheses, i))
 				closedParenthese = i;
 		}
