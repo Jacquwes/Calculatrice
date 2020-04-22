@@ -18,23 +18,9 @@ namespace Calculatrice::Core {
 			expression[static_cast<size_t>(index) + 1] = "-" + expression[static_cast<size_t>(index) + 1];
 		}
 
-		// lois de priorités de calcul
-		struct priorityLawProperties
-		{
-			std::vector<int> multiplicationsIndexes;
-			std::vector<int> divisionsIndexes;
-			std::vector<int> exponentiationsIndexes;
-		};
-
-		priorityLawProperties props;
-
-		if (Calculatrice::Utils::vectorIncludes(expression, "*"))
-			props.multiplicationsIndexes = Calculatrice::Utils::indexesInVector(expression, "*");
-		if (Calculatrice::Utils::vectorIncludes(expression, "/"))
-			props.divisionsIndexes = Calculatrice::Utils::indexesInVector(expression, "/");
-		if (Calculatrice::Utils::vectorIncludes(expression, "^")) // doit remonter au dessus de * et /
-			props.exponentiationsIndexes = Calculatrice::Utils::indexesInVector(expression, "^");
-			
+		expression = Calculatrice::Utils::frameAlignedOperations(expression, "^");
+		expression = Calculatrice::Utils::frameAlignedOperations(expression, "*");
+		expression = Calculatrice::Utils::frameAlignedOperations(expression, "/");
 
 		return expression;
 	}

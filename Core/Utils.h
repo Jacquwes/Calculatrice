@@ -14,6 +14,7 @@ namespace Calculatrice::Utils
 
 	std::vector<int> indexesInVector(std::vector<std::string> vector, std::string key);
 
+	std::vector<std::string> frameAlignedOperations(std::vector<std::string> expression, std::string operation);
 	std::vector<int> findDeepestExpression(std::vector<std::string> exression);
 
 	namespace Constants {

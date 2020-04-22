@@ -121,6 +121,37 @@ namespace Calculatrice::Utils
 		return result;
 	}
 
+	std::vector<std::string> frameAlignedOperations(std::vector<std::string> expression, std::string operation)
+	{
+		// trouver le premier index de *
+		// mettre une parenthèse devant
+		// trouver le deuxieme index de *
+		// si ils se suivent
+			// on continue
+		// sinon on met une parenthèse derrière
+		std::vector<std::string> newExpression{};
+		std::vector<int> indexes = indexesInVector(expression, operation);
+
+		for (int i = 0; i < indexes.size(); i++)
+		{
+			indexes = indexesInVector(expression, operation);
+			int index = indexes[i];
+			if (i == 0)
+				expression.insert(expression.begin() + index - 1, "(");
+			else if (expression[static_cast<size_t>(index) - 2] != operation)
+				expression.insert(expression.begin() + index - 1, "(");
+
+			indexes = indexesInVector(expression, operation);
+			index = indexes[i];
+			if (i == indexes.size() - 1)
+				expression.insert(expression.begin() + index + 2, ")");
+			else if (expression[static_cast<size_t>(index) + 2] != operation)
+					expression.insert(expression.begin() + index + 2, ")");
+		}
+
+		return expression;
+	}
+
 	std::vector<int> findDeepestExpression(std::vector<std::string> expression)
 	{
 		std::vector<int> openParentheses = indexesInVector(expression, "(");
