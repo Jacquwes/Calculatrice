@@ -1,8 +1,9 @@
 #include <iostream>
 
-#include "Core/Core.h"
+#include "UserInterface/UserInterface.h"
 
 int main(int argc, char** argv)
 {
-	std::cout << Calculatrice::Core::solve("5+6*3+2*2*2") << std::endl;
+	Calculatrice::UI::UserInterface* ui = new Calculatrice::UI::UserInterface(Calculatrice::UI::UserInterfaceOptions{});
+	ui->startConsole();
 }

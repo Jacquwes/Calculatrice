@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		readme.md = readme.md
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UserInterface", "UserInterface\UserInterface.vcxproj", "{581041FB-394E-4B6D-A0B0-A19D79AA76D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,16 @@ Global
 		{484A6954-2762-4626-B20D-D1C3C26F2404}.Release|x64.Build.0 = Release|x64
 		{484A6954-2762-4626-B20D-D1C3C26F2404}.Release|x86.ActiveCfg = Release|Win32
 		{484A6954-2762-4626-B20D-D1C3C26F2404}.Release|x86.Build.0 = Release|Win32
+		{581041FB-394E-4B6D-A0B0-A19D79AA76D2}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{581041FB-394E-4B6D-A0B0-A19D79AA76D2}.Debug|x64.ActiveCfg = Debug|x64
+		{581041FB-394E-4B6D-A0B0-A19D79AA76D2}.Debug|x64.Build.0 = Debug|x64
+		{581041FB-394E-4B6D-A0B0-A19D79AA76D2}.Debug|x86.ActiveCfg = Debug|Win32
+		{581041FB-394E-4B6D-A0B0-A19D79AA76D2}.Debug|x86.Build.0 = Debug|Win32
+		{581041FB-394E-4B6D-A0B0-A19D79AA76D2}.Release|Any CPU.ActiveCfg = Release|Win32
+		{581041FB-394E-4B6D-A0B0-A19D79AA76D2}.Release|x64.ActiveCfg = Release|x64
+		{581041FB-394E-4B6D-A0B0-A19D79AA76D2}.Release|x64.Build.0 = Release|x64
+		{581041FB-394E-4B6D-A0B0-A19D79AA76D2}.Release|x86.ActiveCfg = Release|Win32
+		{581041FB-394E-4B6D-A0B0-A19D79AA76D2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
