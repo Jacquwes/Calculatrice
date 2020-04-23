@@ -4,6 +4,7 @@
 
 int main(int argc, char** argv)
 {
-	Calculatrice::UI::UserInterface* ui = new Calculatrice::UI::UserInterface(Calculatrice::UI::UserInterfaceOptions{});
-	ui->startConsole();
+	Calculatrice::UI::UserInterfaceOptions options{};
+	Calculatrice::UI::UserInterface ui(options);
+	ui.startConsole();
 }
