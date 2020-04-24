@@ -59,7 +59,9 @@ namespace Calculatrice::UI {
 		writeColor(" calculatrice", Colors::GREEN);
 		std::cout << "> ";
 		std::string entry;
+		setColor(Colors::CYAN);
 		std::getline(std::cin, entry);
+		setColor(Colors::WHITE);
 
 		// Assigne le premier mot entré au nom de la commande
 		std::string commandName = Calculatrice::Utils::splitString(entry, { " " })[0];
@@ -112,11 +114,17 @@ namespace Calculatrice::UI {
 		}
 	}
 
-	void writeColor(std::string text, Colors color)
+	void setColor(Colors color)
 	{
 		// Récupère le stream de la sortie de console, et lui assigne un attribut, conformément à https://docs.microsoft.com/en-us/windows/console/setconsoletextattribute
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), static_cast<WORD>(color));
+	}
+
+	void writeColor(std::string text, Colors color)
+	{
+		setColor(color);
 		std::cout << text;
+		// Remet la console en noir sur blanc
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), static_cast<WORD>(Colors::WHITE));
 	}
 }

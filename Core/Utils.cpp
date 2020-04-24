@@ -109,26 +109,29 @@ namespace Calculatrice::Utils
 		std::vector<int> indexes = indexesInVector(expression, operation);
 		
 		// S'exécute pour chaque opérateur
-		for (int i = 0; i < indexes.size(); i++)
+		for (unsigned int i = 0; i < indexes.size(); i++)
 		{
 			indexes = indexesInVector(expression, operation);
 			int index = indexes[i];
-			// Si c'est le premier opérateur
-			if (i == 0)
-				expression.insert(expression.begin() + index - 1, "(");
-			// Si celui le précédant était différent
-			else if (expression[static_cast<size_t>(index) - 2] != operation)
-				expression.insert(expression.begin() + index - 1, "(");
+			if (expression[static_cast<size_t>(index) - 1] != ")" && expression[static_cast<size_t>(index) - 1] != "(")
+			{
+				// Si c'est le premier opérateur
+				if (i == 0)
+					expression.insert(expression.begin() + index - 1, "(");
+				// Si celui le précédant était différent
+				else if (expression[static_cast<size_t>(index) - 2] != operation)
+					expression.insert(expression.begin() + index - 1, "(");
 
-			// Mise à jour des index, car ils peuvent avoir été modifiés juste au dessus.
-			indexes = indexesInVector(expression, operation);
-			index = indexes[i];
-			// Si c'est le dernier opérateur
-			if (i == indexes.size() - 1)
-				expression.insert(expression.begin() + index + 2, ")");
-			// Si le suivant est différent
-			else if (expression[static_cast<size_t>(index) + 2] != operation)
+				// Mise à jour des index, car ils peuvent avoir été modifiés juste au dessus.
+				indexes = indexesInVector(expression, operation);
+				index = indexes[i];
+				// Si c'est le dernier opérateur
+				if (i == indexes.size() - 1)
 					expression.insert(expression.begin() + index + 2, ")");
+				// Si le suivant est différent
+				else if (expression[static_cast<size_t>(index) + 2] != operation)
+					expression.insert(expression.begin() + index + 2, ")");
+			}
 		}
 
 		return expression;

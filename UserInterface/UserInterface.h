@@ -42,6 +42,9 @@ namespace Calculatrice::UI {
 		std::string description;
 	};
 
+	// Sert à changer la console de couleur
+	void setColor(Colors color);
+
 	// Sert à écrire un texte de couleur
 	void writeColor(std::string text, Colors color);
 

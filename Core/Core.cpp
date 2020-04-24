@@ -22,12 +22,6 @@ namespace Calculatrice::Core {
 			expression[static_cast<size_t>(index) + 1] = "-" + expression[static_cast<size_t>(index) + 1];
 		}
 
-		// Sert à respecter les lois de priorités de calcul.
-		// Encadre de parenthèses les opérations qui se suivent.
-		expression = Calculatrice::Utils::frameAlignedOperations(expression, "^");
-		expression = Calculatrice::Utils::frameAlignedOperations(expression, "*");
-		expression = Calculatrice::Utils::frameAlignedOperations(expression, "/");
-
 		return expression;
 	}
 
@@ -50,6 +44,15 @@ namespace Calculatrice::Core {
 
 			// Assigne l'expression la plus intérieure à son vector.
 			std::copy(expression.begin() + bounds[0] + 1, expression.begin() + bounds[1], std::back_inserter(deepestExpression));
+
+			// Sert à respecter les lois de priorités de calcul.
+			// Encadre de parenthèses les opérations qui se suivent.
+			// Ces instructions ne sont pas situées dans la fonction de sérialisation,
+			// car les parenthèses provoqueraient des bugs.
+			deepestExpression = Calculatrice::Utils::frameAlignedOperations(deepestExpression, "^");
+			deepestExpression = Calculatrice::Utils::frameAlignedOperations(deepestExpression, "*");
+			deepestExpression = Calculatrice::Utils::frameAlignedOperations(deepestExpression, "/");
+
 			// Ajoute la première partie de l'expression au vector de la nouvelle expression.
 			std::copy(expression.begin(), expression.begin() + bounds[0], std::back_inserter(newExpression));
 			// Ajoute l'expression la plus intérieure à la nouvelle.
@@ -59,6 +62,8 @@ namespace Calculatrice::Core {
 
 			expression = newExpression;
 		}
+
+		if (expression.size() == 1) return std::stod(expression[0]);
 
 		// Résoud l'opération des deux premiers membres de l'expression.
 		double result = 0;
