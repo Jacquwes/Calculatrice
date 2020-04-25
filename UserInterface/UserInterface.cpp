@@ -43,7 +43,7 @@ namespace Calculatrice::UI {
 		case Commands::SOLVE:
 			// Vérifie le nombre d'arguments
 			if (command.args.size() != 1)
-				throw(Error{ "Nombre d'arguments incorrect", "Cette commande ne peut prendre qu'un seul argument. Pour plus d'informations, entrez \"?\" ou \"help\"." });
+				throw(Calculatrice::Utils::Error{ "Nombre d'arguments incorrect", "Cette commande ne peut prendre qu'un seul argument. Pour plus d'informations, entrez \"?\" ou \"help\"." });
 			// Résoud l'expression et affiche son résultat
 			else
 				std::cout << " " << Calculatrice::Core::solve(command.args[0]) << std::endl;
@@ -75,7 +75,7 @@ namespace Calculatrice::UI {
 		else if (commandName == "solve")
 			command.command = Commands::SOLVE;
 		else
-			throw(Error{ "Commande introuvable", "Cette commande n'existe pas. Pour obtenir une liste des commandes utilisables, entrez \"?\" ou \"help\"." });
+			throw(Calculatrice::Utils::Error{ "Commande introuvable", "Cette commande n'existe pas. Pour obtenir une liste des commandes utilisables, entrez \"?\" ou \"help\"." });
 
 		// Récupère une liste d'arguments
 		std::vector<std::string> args = Calculatrice::Utils::splitString(entry, { " " });
@@ -103,7 +103,7 @@ namespace Calculatrice::UI {
 				// Et les exécute
 				handleCommand(command);
 			}
-			catch (const Error& e)
+			catch (const Calculatrice::Utils::Error& e)
 			{
 				// Si une erreur a été générée, elle est traitée ici
 				writeColor(" Une erreur est survenue : ", Colors::RED);
@@ -125,6 +125,6 @@ namespace Calculatrice::UI {
 		setColor(color);
 		std::cout << text;
 		// Remet la console en noir sur blanc
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), static_cast<WORD>(Colors::WHITE));
+		setColor(Colors::WHITE);
 	}
 }

@@ -84,6 +84,12 @@ namespace Calculatrice::Core {
 		while (Calculatrice::Utils::vectorIncludes(expression, ""))
 			expression.erase(expression.begin() + Calculatrice::Utils::firstIndexInVector(expression, ""));
 
+		// Remplacer la constante d'Euler (de la fonction exponentielle) par sa valeur
+		//tex:
+		//$$e=\frac{2+2}{\frac{2+3}{\frac{3+4}{\frac{4+5}{etc...}}}}$$
+		while (Calculatrice::Utils::vectorIncludes(expression, "e"))
+			expression[Calculatrice::Utils::firstIndexInVector(expression, "e")] = "2.71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642742746";
+
 		std::vector<std::string> numbers{"."};
 		for (int i = 48; i < 58; i++)
 			numbers.push_back(std::string(1, i));
@@ -153,11 +159,10 @@ namespace Calculatrice::Core {
 			deepestExpression = Calculatrice::Utils::frameAlignedOperations(deepestExpression, "*");
 			deepestExpression = Calculatrice::Utils::frameAlignedOperations(deepestExpression, "/");
 
+			// Supprime toutes les parenthèses de l'expression la plus intérieure
 			for (auto& i : { "(", ")" })
 				while (Calculatrice::Utils::vectorIncludes(deepestExpression, i))
-				{
 					deepestExpression.erase(deepestExpression.begin() + Calculatrice::Utils::firstIndexInVector(deepestExpression, i));
-				}
 
 			// Ajoute la première partie de l'expression au vector de la nouvelle expression.
 			std::copy(expression.begin(), expression.begin() + bounds[0], std::back_inserter(newExpression));

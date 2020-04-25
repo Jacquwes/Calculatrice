@@ -35,13 +35,6 @@ namespace Calculatrice::UI {
 
 	};
 
-	// Structure représentant une erreur
-	struct Error
-	{
-		std::string name;
-		std::string description;
-	};
-
 	// Sert à changer la console de couleur
 	void setColor(Colors color);
 

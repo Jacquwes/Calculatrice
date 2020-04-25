@@ -65,4 +65,11 @@ namespace Calculatrice::Utils
 			"^",
 		};
 	}
+
+	// Structure représentant une erreur
+	struct Error
+	{
+		std::string name;
+		std::string description;
+	};
 }
