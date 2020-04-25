@@ -4,6 +4,7 @@
 #include <vector>
 
 namespace Calculatrice::Core {
+	std::vector<std::string> parse(std::string rawExpression);
 
 	//	Cette fonction sert à génerer une liste de strings compréhensible par le programme à partir d'une
 	//		expression sous la forme d'une variable string.

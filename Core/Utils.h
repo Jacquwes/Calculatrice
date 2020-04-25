@@ -59,7 +59,10 @@ namespace Calculatrice::Utils
 	namespace Constants {
 		//	Délimiteurs utilisés pour sérialiser les expressions.
 		inline std::vector<std::string> delimiters = {
-			"+", "-", "*", "/", "(", ")", "^"
+			"+", "-",
+			"*", "/",
+			"(", ")",
+			"^",
 		};
 	}
 }
