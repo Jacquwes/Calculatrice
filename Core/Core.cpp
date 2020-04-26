@@ -178,7 +178,7 @@ namespace Calculatrice::Core {
 		double result = 0;
 		if (expression[1] == "+") result = std::stod(expression[0]) + std::stod(expression[2]);
 		else if (expression[1] == "*") result = std::stod(expression[0]) * std::stod(expression[2]);
-		else if (expression[1] == "/") result = std::stod(expression[0]) / std::stod(expression[2]);
+		else if (expression[1] == "/") result = Calculatrice::Operations::division(std::stod(expression[0]), std::stod(expression[2]), 10);
 		else if (expression[1] == "^") result = Calculatrice::Operations::exponentiation(std::stod(expression[0]), std::stod(expression[2]));
 		else if (expression[1] == "rcn") result = Calculatrice::Operations::root(std::stod(expression[0]), std::stod(expression[2]));
 

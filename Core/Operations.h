@@ -1,6 +1,8 @@
 #pragma once
 
 namespace Calculatrice::Operations {
+	double exponential(double number);
 	double exponentiation(double firstMember, double secondMember);
-	double root(double member, double root);
+	double division(double dividende, double divisor, int precision);
+	double root(double number, double root);
 }
