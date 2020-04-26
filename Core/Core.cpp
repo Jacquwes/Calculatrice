@@ -88,7 +88,7 @@ namespace Calculatrice::Core {
 		while (Calculatrice::Utils::vectorIncludes(expression, "e"))
 			expression[Calculatrice::Utils::firstIndexInVector(expression, "e")] = std::to_string(Calculatrice::Utils::Constants::euler);
 
-		std::vector<std::string> numbers{"."};
+		std::vector<std::string> numbers{ "." };
 		for (int i = 48; i < 58; i++)
 			numbers.push_back(std::string(1, i));
 
@@ -98,7 +98,7 @@ namespace Calculatrice::Core {
 		{
 			int index = Calculatrice::Utils::firstIndexInVector(expression, "-");
 			expression[index] = "+";
-			
+
 			// static_cast<size_t>(index) sert à considerer index comme une variable sur 8 octets plutot que 4.
 			// Cela permet d'éviter des erreurs sur les très (très) grandes opérations, et le compilateur
 			//		considère ça comme une erreur.
@@ -175,16 +175,61 @@ namespace Calculatrice::Core {
 		if (expression.size() == 1) return std::stod(expression[0]);
 
 		// Résoud l'opération des deux premiers membres de l'expression.
-		double result = 0;
+		double result{};
+		int operationSize = 3;
 		if (expression[1] == "+") result = std::stod(expression[0]) + std::stod(expression[2]);
 		else if (expression[1] == "*") result = std::stod(expression[0]) * std::stod(expression[2]);
 		else if (expression[1] == "/") result = Calculatrice::Operations::division(std::stod(expression[0]), std::stod(expression[2]), 10);
+		// Exponentiation
 		else if (expression[1] == "^") result = Calculatrice::Operations::exponentiation(std::stod(expression[0]), std::stod(expression[2]));
-		else if (expression[1] == "rcn") result = Calculatrice::Operations::root(std::stod(expression[0]), std::stod(expression[2]));
+		// Racine
+		else if (expression[1] == "rt") result = Calculatrice::Operations::root(std::stod(expression[0]), std::stod(expression[2]));
+		// Racine base 2
+		else if (expression[0] == "sqrt") {
+			result = Calculatrice::Operations::root(std::stod(expression[1]), 2);
+			operationSize--;
+		}
+		// Racine base 3
+		else if (expression[0] == "cbrt") {
+			result = Calculatrice::Operations::root(std::stod(expression[1]), 3);
+			operationSize--;
+		}
+		// Exponentielle
+		else if (expression[0] == "exp") {
+			result = Calculatrice::Operations::exponential(std::stod(expression[1]));
+			operationSize--;
+		}
+		// Logarithme base e
+		else if (expression[0] == "ln") {
+			result = log(std::stod(expression[1]));
+			operationSize--;
+		}
+		// Logarithme base 10
+		else if (expression[0] == "log") {
+			result = Calculatrice::Operations::division(log(std::stod(expression[1])), log(10), 10);
+			operationSize--;
+		}
+		// Logarithme base x
+		else if (expression[1] == "log") result = Calculatrice::Operations::division(log(std::stod(expression[2])), log(std::stod(expression[0])), 10);
+
+		// Opérations sur les bits
+		// Arithmetic shift vers la gauche
+		else if (expression[1] == "<") result = std::stoll(expression[0]) << std::stoll(expression[2]);
+		// Arithmetic shift vers la droite
+		else if (expression[1] == ">") result = std::stoll(expression[0]) >> std::stoll(expression[2]);
+		// Les Logic shifts demanderaient à ce que l'on change la fonction parse, cette option sera donc considérée dans le futur.
+		// OR
+		else if (expression[1] == "|") result = std::stoll(expression[0]) | std::stoll(expression[2]);
+		// XOR
+		else if (expression[1] == "\\") result = std::stoll(expression[0]) ^ std::stoll(expression[2]);
+		// AND
+		else if (expression[1] == "&") result = std::stoll(expression[0]) & std::stoll(expression[2]);
+		// NOT
+		else if (expression[0] == "~") result = ~std::stoll(expression[1]);
 
 		// Ajoute le résultat de la première opération de l'expression et son reste à la nouvelle expression.
 		std::vector<std::string> newExpression{ std::to_string(result) };
-		std::copy(expression.begin() + 3, expression.end(), std::back_inserter(newExpression));
+		std::copy(expression.begin() + operationSize, expression.end(), std::back_inserter(newExpression));
 
 		// Fonctionne par récursivité.
 		return solve(newExpression);
