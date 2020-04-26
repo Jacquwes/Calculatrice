@@ -64,6 +64,10 @@ namespace Calculatrice::Utils
 			"(", ")",
 			"^",
 		};
+
+		//tex:
+		//$$e=\frac{2+2}{\frac{2+3}{\frac{3+4}{\frac{4+5}{etc...}}}}$$
+		inline double euler = 2.71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642742746;
 	}
 
 	// Structure représentant une erreur

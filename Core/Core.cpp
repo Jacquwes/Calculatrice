@@ -85,10 +85,8 @@ namespace Calculatrice::Core {
 			expression.erase(expression.begin() + Calculatrice::Utils::firstIndexInVector(expression, ""));
 
 		// Remplacer la constante d'Euler (de la fonction exponentielle) par sa valeur
-		//tex:
-		//$$e=\frac{2+2}{\frac{2+3}{\frac{3+4}{\frac{4+5}{etc...}}}}$$
 		while (Calculatrice::Utils::vectorIncludes(expression, "e"))
-			expression[Calculatrice::Utils::firstIndexInVector(expression, "e")] = "2.71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642742746";
+			expression[Calculatrice::Utils::firstIndexInVector(expression, "e")] = std::to_string(Calculatrice::Utils::Constants::euler);
 
 		std::vector<std::string> numbers{"."};
 		for (int i = 48; i < 58; i++)
