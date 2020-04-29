@@ -21,16 +21,17 @@ namespace Calculatrice::Utils
 	//	Params :
 	//		vector<...> vector	: Vector à inspecter
 	//		...	key				: Valeur à trouver
-	bool vectorIncludes(std::vector<int> vector, int key);
-	bool vectorIncludes(std::vector<std::string> vector, std::string key);
+	template<class T>
+	bool vectorIncludes(std::vector<T> vector, T key);
 
 	//	Retourne l'index de la première fois qu'une valeur apparaît dans un vector.
 	//
 	//
 	//	Params :
-	//		vector<string> vector	: Vector à inspecter
-	//		string key				: Valeur à trouver
-	int firstIndexInVector(std::vector<std::string> vector, std::string key);
+	//		vector<...> vector	: Vector à inspecter
+	//		... key				: Valeur à trouver
+	template<class T>
+	int firstIndexInVector(std::vector<T> vector, T key);
 
 	//	Retourne une liste de tous les index d'une valeur dans un vector.
 	//
@@ -69,6 +70,8 @@ namespace Calculatrice::Utils
 		//tex:
 		//$$e=\frac{2+2}{\frac{2+3}{\frac{3+4}{\frac{4+5}{etc...}}}}$$
 		inline double euler = 2.71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642742746;
+
+		inline double pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480;
 	}
 
 	// Structure représentant une erreur

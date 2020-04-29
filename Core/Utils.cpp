@@ -57,18 +57,15 @@ namespace Calculatrice::Utils
 		return final;
 	}
 
-	bool vectorIncludes(std::vector<int> vect, int key)
+	template<class T>
+	bool vectorIncludes(std::vector<T> vect, T key)
 	{
 		// Si le vector contient au moins une fois key, alors la fonction retournera true.
 		return std::count(vect.begin(), vect.end(), key);
 	}
 
-	bool vectorIncludes(std::vector<std::string> vect, std::string key)
-	{
-		return std::count(vect.begin(), vect.end(), key);
-	}
-
-	int firstIndexInVector(std::vector<std::string> vect, std::string key)
+	template<class T>
+	int firstIndexInVector(std::vector<T> vect, T key)
 	{
 		// Index par défaut.
 		int index = 0;

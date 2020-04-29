@@ -5,6 +5,7 @@
 #include <vector>
 #include <Windows.h>
 
+#include "Algorithm/Algorithm.h"
 #include "Core/Core.h"
 #include "Core/Utils.h"
 
@@ -16,11 +17,14 @@ namespace Calculatrice::UI {
 		// Agit différemment en fonction de la commande choisie
 		switch (command.command)
 		{
+		case Commands::ALGO:
+			listenAlgorithm().execute();
+			break;
 		case Commands::HELP:
 			// Affiche toutes les commandes disponibles
 			std::cout
 				<< " Aide :" << std::endl;
-			writeColor("     help ", Colors::CYAN);
+			writeColor("     aide ", Colors::CYAN);
 			std::cout << "ou";
 			writeColor(" ?", Colors::CYAN);
 			std::cout << std::endl
@@ -43,13 +47,29 @@ namespace Calculatrice::UI {
 		case Commands::SOLVE:
 			// Vérifie le nombre d'arguments
 			if (command.args.size() != 1)
-				throw(Calculatrice::Utils::Error{ "Nombre d'arguments incorrect", "Cette commande ne peut prendre qu'un seul argument. Pour plus d'informations, entrez \"?\" ou \"help\"." });
+				throw(Calculatrice::Utils::Error{ "Nombre d'arguments incorrect", "Cette commande ne peut prendre qu'un seul argument. Pour plus d'informations, entrez \"?\" ou \"aide\"." });
 			// Résoud l'expression et affiche son résultat
 			else
 				std::cout << " " << Calculatrice::Core::solve(command.args[0]) << std::endl;
 		default:
 			break;
 		}
+	}
+
+	Algorithm::Algorithm UserInterface::listenAlgorithm()
+	{
+		std::string finalAlgorithm{};
+		bool finished{};
+		while (!finished)
+		{
+			std::string input;
+			std::getline(std::cin, input);
+			if (input == "end")
+				finished = true;
+			else
+				finalAlgorithm += input + "\n";
+		}
+		return Algorithm::parseAlgorithm(finalAlgorithm);
 	}
 
 	Command UserInterface::listenCommand()
@@ -68,22 +88,24 @@ namespace Calculatrice::UI {
 
 		// Détermine la commande utilisée, et génère une exception si elle est introuvable
 		Command command;
-		if (commandName == "help" || commandName == "?")
+		if (commandName == "aide" || commandName == "?")
 			command.command = Commands::HELP;
+		else if (commandName == "algo")
+			command.command = Commands::ALGO;
 		else if (commandName == "quit")
 			command.command = Commands::QUIT;
 		else if (commandName == "solve")
 			command.command = Commands::SOLVE;
 		else
-			throw(Calculatrice::Utils::Error{ "Commande introuvable", "Cette commande n'existe pas. Pour obtenir une liste des commandes utilisables, entrez \"?\" ou \"help\"." });
+			throw(Calculatrice::Utils::Error{ "Commande introuvable", "Cette commande n'existe pas. Pour obtenir une liste des commandes utilisables, entrez \"?\" ou \"aide\"." });
 
 		// Récupère une liste d'arguments
 		std::vector<std::string> args = Calculatrice::Utils::splitString(entry, { " " });
 		// Retire le nom de la commande
 		args.erase(args.begin());
 		// Retire tous les espaces
-		while (Calculatrice::Utils::vectorIncludes(args, " "))
-			args.erase(args.begin() + Calculatrice::Utils::firstIndexInVector(args, " "));
+		while (Calculatrice::Utils::vectorIncludes(args, std::string(" ")))
+			args.erase(args.begin() + Calculatrice::Utils::firstIndexInVector(args, std::string(" ")));
 		command.args = args;
 
 		return command;
@@ -92,7 +114,7 @@ namespace Calculatrice::UI {
 	void UserInterface::startConsole()
 	{
 		writeColor(" Calculatrice", Colors::GREEN);
-		std::cout << std::endl << " Pour obtenir une liste des commandes utilisables, entrez \"?\" ou \"help\"." << std::endl;
+		std::cout << std::endl << " Pour obtenir une liste des commandes utilisables, entrez \"?\" ou \"aide\"." << std::endl;
 
 		while (true)
 		{

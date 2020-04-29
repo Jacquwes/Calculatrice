@@ -4,10 +4,13 @@
 #include <string>
 #include <vector>
 
+#include "Algorithm/Algorithm.h"
+
 namespace Calculatrice::UI {
 	// Enumerateur de toutes les commandes
 	enum class Commands
 	{
+		ALGO,
 		HELP,
 		QUIT,
 		SOLVE,
@@ -55,6 +58,7 @@ namespace Calculatrice::UI {
 		void handleCommand(Command command);
 		// Demande à l'utilisateur d'entrer une commande
 		Command listenCommand();
+		Algorithm::Algorithm listenAlgorithm();
 		UserInterfaceOptions m_options;
 	};
 }

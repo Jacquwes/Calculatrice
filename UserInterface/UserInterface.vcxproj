@@ -169,6 +169,9 @@
     <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Algorithm\Algorithm.vcxproj">
+      <Project>{dce226a9-609a-4fa0-99bf-6cc8a026146d}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.vcxproj">
       <Project>{099c9d15-c400-49f2-86d7-59b37a91f99c}</Project>
     </ProjectReference>

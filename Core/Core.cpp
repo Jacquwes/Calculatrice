@@ -81,12 +81,15 @@ namespace Calculatrice::Core {
 		// Sépare les nombres des symboles
 		std::vector<std::string> expression = parse(rawExpression);
 		// Supprime les éléments vides de l'expression
-		while (Calculatrice::Utils::vectorIncludes(expression, ""))
-			expression.erase(expression.begin() + Calculatrice::Utils::firstIndexInVector(expression, ""));
+		while (Calculatrice::Utils::vectorIncludes(expression, std::string("")))
+			expression.erase(expression.begin() + Calculatrice::Utils::firstIndexInVector(expression, std::string("")));
 
 		// Remplacer la constante d'Euler (de la fonction exponentielle) par sa valeur
-		while (Calculatrice::Utils::vectorIncludes(expression, "e"))
-			expression[Calculatrice::Utils::firstIndexInVector(expression, "e")] = std::to_string(Calculatrice::Utils::Constants::euler);
+		while (Calculatrice::Utils::vectorIncludes(expression, std::string("e")))
+			expression[Calculatrice::Utils::firstIndexInVector(expression, std::string("e"))] = std::to_string(Calculatrice::Utils::Constants::euler);
+		// Remplacer pi par sa valeur
+		while (Calculatrice::Utils::vectorIncludes(expression, std::string("pi")))
+			expression[Calculatrice::Utils::firstIndexInVector(expression, std::string("pi"))] = std::to_string(Calculatrice::Utils::Constants::pi);
 
 		std::vector<std::string> numbers{ "." };
 		for (int i = 48; i < 58; i++)
@@ -94,9 +97,9 @@ namespace Calculatrice::Core {
 
 		// Sert à respecter les lois de distributivité.
 		// Remplace toutes les soustractions par des additions du nombre opposé.
-		while (Calculatrice::Utils::vectorIncludes(expression, "-"))
+		while (Calculatrice::Utils::vectorIncludes(expression, std::string("-")))
 		{
-			int index = Calculatrice::Utils::firstIndexInVector(expression, "-");
+			int index = Calculatrice::Utils::firstIndexInVector(expression, std::string("-"));
 			expression[index] = "+";
 
 			// static_cast<size_t>(index) sert à considerer index comme une variable sur 8 octets plutot que 4.
@@ -136,7 +139,7 @@ namespace Calculatrice::Core {
 		if (expression.size() == 1) return std::stod(expression[0]);
 
 		// Calcule en premier les calculs entre parenthèses.
-		while (Calculatrice::Utils::vectorIncludes(expression, "("))
+		while (Calculatrice::Utils::vectorIncludes(expression, std::string("(")))
 		{
 			// Expression entre les parenthèses les plus intérieures.
 			std::vector<std::string> deepestExpression{};
@@ -158,7 +161,7 @@ namespace Calculatrice::Core {
 			deepestExpression = Calculatrice::Utils::frameAlignedOperations(deepestExpression, "/");
 
 			// Supprime toutes les parenthèses de l'expression la plus intérieure
-			for (auto& i : { "(", ")" })
+			for (auto& i : { std::string("("), std::string(")") })
 				while (Calculatrice::Utils::vectorIncludes(deepestExpression, i))
 					deepestExpression.erase(deepestExpression.begin() + Calculatrice::Utils::firstIndexInVector(deepestExpression, i));
 
@@ -179,7 +182,7 @@ namespace Calculatrice::Core {
 		int operationSize = 3;
 		if (expression[1] == "+") result = std::stod(expression[0]) + std::stod(expression[2]);
 		else if (expression[1] == "*") result = std::stod(expression[0]) * std::stod(expression[2]);
-		else if (expression[1] == "/") result = Calculatrice::Operations::division(std::stod(expression[0]), std::stod(expression[2]), 10);
+		else if (expression[1] == "/") result = Calculatrice::Operations::division(std::stod(expression[0]), std::stod(expression[2]), 107);
 		// Exponentiation
 		else if (expression[1] == "^") result = Calculatrice::Operations::exponentiation(std::stod(expression[0]), std::stod(expression[2]));
 		// Racine

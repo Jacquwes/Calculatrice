@@ -42,7 +42,7 @@ namespace Calculatrice::Operations {
 		}
 
 		// Est divisé par 10 à chaque itération, indique où le résultat obtenu durant une de celles-ci doit être placé dans le quotient
-		double position = 1.;
+		long long position = 0;
 		// Résultat de la division
 		double quotient{};
 		// Reste de la division
@@ -56,13 +56,11 @@ namespace Calculatrice::Operations {
 			while (divisor * (i + 1) <= reste)
 				i++;
 			// On ajoute i au quotient, multiplié par sa position
-			quotient += i * position;
+			quotient += i * pow(10, -position++);
 			// Le reste est calculé
 			reste -= (i * divisor);
 			// Puis multiplié par 10
 			reste *= 10;
-			// La position
-			position *= .1;
 		}
 
 		return negative ? -quotient : quotient;
