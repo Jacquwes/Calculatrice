@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Algorithm.h" />
+    <ClInclude Include="Manager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Algorithm.cpp" />

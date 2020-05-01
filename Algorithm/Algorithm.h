@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "Manager.hpp"
+
 namespace Calculatrice::Algorithm {
 	enum class InstructionType
 	{
@@ -18,7 +20,8 @@ namespace Calculatrice::Algorithm {
 
 		inline std::string name() { return m_name; }
 		inline std::string value() { return m_value; }
-		inline void setValue(std::string newValue) { m_value = newValue; };
+		inline Variable* setValue(std::string newValue) { m_value = newValue; return this; }
+		std::string id() { return m_name; }
 	private:
 		std::string m_name;
 		std::string m_value;
@@ -29,6 +32,7 @@ namespace Calculatrice::Algorithm {
 	public:
 		Instruction(Algorithm& algorithm, InstructionType type, std::vector<std::string> args) : m_algorithm(algorithm), m_type(type), m_args(args) {}
 		void execute();
+		std::string id;
 	private:
 		Algorithm& m_algorithm;
 		InstructionType m_type;
@@ -38,19 +42,10 @@ namespace Calculatrice::Algorithm {
 	class Algorithm
 	{
 	public:
+		inline Algorithm() : variableManager(new Manager::Manager<Variable>), instructionManager(new Manager::Manager<Instruction>) {}
 		void execute();
-		inline Algorithm* addInstruction(Instruction instruction) { m_instructions.push_back(instruction); return this; }
-		inline Algorithm* addVariable(Variable variable) { m_variables.push_back(variable); return this; }
-		inline std::vector<Variable> variables() { return m_variables; }
-		inline std::vector < std::string> variablesNames() {
-			std::vector<std::string> vect;
-			for (auto& i : m_variables)
-				vect.push_back(i.name());
-			return vect;
-		}
-	private:
-		std::vector<Instruction> m_instructions;
-		std::vector<Variable> m_variables;
+		Manager::Manager<Variable>* variableManager;
+		Manager::Manager<Instruction>* instructionManager;
 	};
 
 

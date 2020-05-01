@@ -18,6 +18,9 @@
     <ClInclude Include="Algorithm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Manager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Algorithm.cpp">

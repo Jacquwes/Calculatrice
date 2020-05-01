@@ -39,13 +39,13 @@ namespace Calculatrice::Algorithm {
 			// Détermine l'instruction entrée, puis l'ajoute à l'algorithme si elle existe
 			if (line[0] == "set")
 			{
-				Instruction instruction{ *finalAlgorithm, InstructionType::ASSIGN, {line[1], line[2]} };
-				finalAlgorithm->addInstruction(instruction);
+				Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::ASSIGN, {line[1], line[2]});
+				finalAlgorithm->instructionManager->add(instruction);
 			}
 			else if (line[0] == "display")
 			{
-				Instruction instruction{ *finalAlgorithm, InstructionType::DISPLAY, {line[1]} };
-				finalAlgorithm->addInstruction(instruction);
+				Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::DISPLAY, {line[1]});
+				finalAlgorithm->instructionManager->add(instruction);
 			}
 			else
 				throw(Calculatrice::Utils::Error{ "Instruction inconnue.", "L'instruction \"" + line[0] + "\" que vous avez entrée n'est pas reconnu par le lecteur d'algorithme. Veuillez entrer \"?\" ou \"aide\" pour plus d'informations." });
@@ -63,20 +63,18 @@ namespace Calculatrice::Algorithm {
 			std::vector<std::string> expression = Calculatrice::Core::serialize(m_args[1]);
 			// S'exécute sur chaque membre de l'expression entrée. Sert à remplacer les noms de variables par leur valeur.
 			for (auto& i : expression)
+			{
 				// Si l'algorithme comporte une variable du nom du membre actuel
-				if (Calculatrice::Utils::vectorIncludes(m_algorithm.variablesNames(), i))
+				Variable* variable = m_algorithm.variableManager->get(i);
+				if (variable)
 				{
 					// Remplace ce membre par sa valeur
-					int indexInExpression = Calculatrice::Utils::firstIndexInVector(expression, i);
-					int variableIndex = Calculatrice::Utils::firstIndexInVector(m_algorithm.variablesNames(), i);
-					expression[indexInExpression] = m_algorithm.variables()[variableIndex].value();
+					int indexInExpression = Calculatrice::Utils::firstIndexInVector(expression, variable->name());
+					expression[indexInExpression] = variable->value();
 				}
-			// Si le variable existe, alors elle mise à jour
-			if (Calculatrice::Utils::vectorIncludes(m_algorithm.variablesNames(), m_args[0]))
-				m_algorithm.variables()[Calculatrice::Utils::firstIndexInVector(m_algorithm.variablesNames(), m_args[0])].setValue(std::to_string(Calculatrice::Core::solve(expression)));
-			// Sinon, ajoute la variable à l'algorithme
-			else
-				m_algorithm.addVariable(Variable(m_args[0], std::to_string(Calculatrice::Core::solve(expression))));
+			}
+			// Si la variable existe, alors elle mise à jour, sinon, elle est mise à jour.
+			m_algorithm.variableManager->set(m_args[0], new Variable(m_args[0], std::to_string(Calculatrice::Core::solve(expression))));
 			break;
 		}
 		case Calculatrice::Algorithm::InstructionType::DISPLAY:
@@ -84,12 +82,14 @@ namespace Calculatrice::Algorithm {
 			// Idem qu'au dessus
 			std::vector<std::string> expression = Calculatrice::Core::serialize(m_args[0]);
 			for (auto& i : expression)
-				if (Calculatrice::Utils::vectorIncludes(m_algorithm.variablesNames(), i))
+			{
+				Variable* variable = m_algorithm.variableManager->get(i);
+				if (variable)
 				{
-					int indexInExpression = Calculatrice::Utils::firstIndexInVector(expression, i);
-					int variableIndex = Calculatrice::Utils::firstIndexInVector(m_algorithm.variablesNames(), i);
-					expression[indexInExpression] = m_algorithm.variables()[variableIndex].value();
+					int indexInExpression = Calculatrice::Utils::firstIndexInVector(expression, variable->name());
+					expression[indexInExpression] = variable->value();
 				}
+			}
 			// Affiche le résultat
 			std::cout << Calculatrice::Core::solve(expression);
 			break;
@@ -101,7 +101,7 @@ namespace Calculatrice::Algorithm {
 
 	void Algorithm::execute()
 	{
-		for (auto& instruction : m_instructions)
-			instruction.execute();
+		for (auto& instruction : instructionManager->items())
+			instruction->execute();
 	}
 }
