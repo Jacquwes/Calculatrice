@@ -71,8 +71,12 @@ namespace Calculatrice::Algorithm {
 					int variableIndex = Calculatrice::Utils::firstIndexInVector(m_algorithm.variablesNames(), i);
 					expression[indexInExpression] = m_algorithm.variables()[variableIndex].value();
 				}
-			// Ajoute la variable à l'algorithme
-			m_algorithm.addVariable(Variable(m_args[0], std::to_string(Calculatrice::Core::solve(expression))));
+			// Si le variable existe, alors elle mise à jour
+			if (Calculatrice::Utils::vectorIncludes(m_algorithm.variablesNames(), m_args[0]))
+				m_algorithm.variables()[Calculatrice::Utils::firstIndexInVector(m_algorithm.variablesNames(), m_args[0])].setValue(std::to_string(Calculatrice::Core::solve(expression)));
+			// Sinon, ajoute la variable à l'algorithme
+			else
+				m_algorithm.addVariable(Variable(m_args[0], std::to_string(Calculatrice::Core::solve(expression))));
 			break;
 		}
 		case Calculatrice::Algorithm::InstructionType::DISPLAY:
