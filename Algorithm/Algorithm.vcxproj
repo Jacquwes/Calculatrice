@@ -170,6 +170,10 @@
       <Project>{099c9d15-c400-49f2-86d7-59b37a91f99c}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="main.alg" />
+    <None Include="specs.md" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -16,6 +16,7 @@ namespace Calculatrice::Algorithm::Manager
 		}
 
 		inline T* get(std::string id)
+
 		{
 			auto item = std::find_if(
 				m_items.begin(),
