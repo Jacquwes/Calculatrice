@@ -8,8 +8,13 @@
 namespace Calculatrice::Algorithm {
 	enum class InstructionType
 	{
-		ASSIGN,
 		DISPLAY,
+		DISPLAYTEXT,
+		GET,
+		JUMP,
+		POP,
+		PUSH,
+		SET
 	};
 
 	class Algorithm;
@@ -58,6 +63,11 @@ namespace Calculatrice::Algorithm {
 		Manager::Manager<Variable>* variableManager;
 		Manager::Manager<Function>* functionManager;
 		Function* currentFunction;
+
+		std::string pop();
+		Algorithm* push(std::string value);
+	private:
+		std::vector<std::string> m_stack;
 	};
 
 

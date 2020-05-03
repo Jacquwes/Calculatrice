@@ -34,6 +34,7 @@ Toutes les variables déclarées sont globales.
 | Nom de l'instruction 	| Arguments                      	| Description                                                           	|
 |----------------------	|--------------------------------	|-----------------------------------------------------------------------	|
 | display              	| `Valeur`                       	| Affiche la valeur donnée.                                             	|
+| displaytext           | `Texte à afficher`              | Affiche le texte donné.                                                   |
 | get                  	| `Nom de la variable`           	| Assigne une valeur récupérée depuis la console à une variable donnée. 	|
 | jump                 	| `Nom de la fonction`           	| Exécute le code appartenant à la fonction indiquée.                   	|
 | pop                  	| `Variable`                     	| Déplace la valeur située en haut de la pile dans la variable donnée.  	|
