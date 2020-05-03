@@ -40,16 +40,25 @@ namespace Calculatrice::Algorithm {
 			if (line[0] == "set")
 			{
 				Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::ASSIGN, {line[1], line[2]});
-				finalAlgorithm->instructionManager->add(instruction);
+				finalAlgorithm->currentFunction->instructionManager->add(instruction);
 			}
 			else if (line[0] == "display")
 			{
 				Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::DISPLAY, {line[1]});
-				finalAlgorithm->instructionManager->add(instruction);
+				finalAlgorithm->currentFunction->instructionManager->add(instruction);
+			}
+			// Si aucune intruction n'est détectée, et que la ligne ne fait qu'un mot, alors c'est une déclaration de fonction
+			else if (line.size() == 1)
+			{
+				finalAlgorithm->currentFunction = new Function(line[0]);
+				finalAlgorithm->functionManager->add(finalAlgorithm->currentFunction);
 			}
 			else
 				throw(Calculatrice::Utils::Error{ "Instruction inconnue.", "L'instruction \"" + line[0] + "\" que vous avez entrée n'est pas reconnu par le lecteur d'algorithme. Veuillez entrer \"?\" ou \"aide\" pour plus d'informations." });
 		}
+
+		if (!finalAlgorithm->functionManager->get("main"))
+			throw(Calculatrice::Utils::Error{ "Point d'entrée du programme introuvable.", "Aucun point d'entrée n'a été trouvé dans votre programme. Vous devez créer une fonction du nom de \"main\"" });
 
 		return *finalAlgorithm;
 	}
@@ -99,9 +108,16 @@ namespace Calculatrice::Algorithm {
 		}
 	}
 
-	void Algorithm::execute()
+	void Function::execute()
 	{
 		for (auto& instruction : instructionManager->items())
+		{
 			instruction->execute();
+		}
+	}
+
+	void Algorithm::execute()
+	{
+		functionManager->get("main")->execute();
 	}
 }

@@ -28,10 +28,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="main.alg">
+    <None Include="specs.md">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="specs.md">
+    <None Include="..\x64\Debug\test.alg">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

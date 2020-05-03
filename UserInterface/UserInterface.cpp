@@ -1,6 +1,8 @@
 #include "UserInterface.h"
 
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <Windows.h>
@@ -18,8 +20,25 @@ namespace Calculatrice::UI {
 		switch (command.command)
 		{
 		case Commands::ALGO:
-			listenAlgorithm().execute();
+		{
+			if (command.args.size() == 0)
+				listenAlgorithm().execute();
+			else if (command.args.size() == 1)
+			{
+				std::string algorithm;
+				std::ifstream istream(command.args[0]);
+				if (istream)
+				{
+					std::ostringstream ostream;
+					ostream << istream.rdbuf();
+					algorithm = ostream.str();
+					Algorithm::parseAlgorithm(algorithm).execute();
+				}
+				else
+					throw(Utils::Error{ "Fichier introuvable.", "Le fichier que vous avez spécifié n'existe pas. Vérifiez qu'il se situe dans le même dossier que la calculatrice, ou bien que son chemin relatif/absolu ne contienne pas d'espaces." });
+			}
 			break;
+		}
 		case Commands::HELP:
 			// Affiche toutes les commandes disponibles
 			std::cout

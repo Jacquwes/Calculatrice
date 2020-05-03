@@ -32,20 +32,32 @@ namespace Calculatrice::Algorithm {
 	public:
 		Instruction(Algorithm& algorithm, InstructionType type, std::vector<std::string> args) : m_algorithm(algorithm), m_type(type), m_args(args) {}
 		void execute();
-		std::string id;
 	private:
 		Algorithm& m_algorithm;
 		InstructionType m_type;
 		std::vector<std::string> m_args;
 	};
+
+	class Function
+	{
+	public:
+		inline Function(std::string name) : instructionManager(new Manager::Manager<Instruction>), m_name(name) {}
+		Manager::Manager<Instruction>* instructionManager;
+		void execute();
+
+		std::string id() { return m_name; }
+	private:
+		std::string m_name;
+	};
 	
 	class Algorithm
 	{
 	public:
-		inline Algorithm() : variableManager(new Manager::Manager<Variable>), instructionManager(new Manager::Manager<Instruction>) {}
+		inline Algorithm() : variableManager(new Manager::Manager<Variable>), functionManager(new Manager::Manager<Function>), currentFunction(nullptr) {}
 		void execute();
 		Manager::Manager<Variable>* variableManager;
-		Manager::Manager<Instruction>* instructionManager;
+		Manager::Manager<Function>* functionManager;
+		Function* currentFunction;
 	};
 
 
