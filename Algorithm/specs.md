@@ -34,9 +34,16 @@ Toutes les variables déclarées sont globales.
 | Nom de l'instruction 	| Arguments                      	| Description                                                           	|
 |----------------------	|--------------------------------	|-----------------------------------------------------------------------	|
 | display              	| `Valeur`                       	| Affiche la valeur donnée.                                             	|
-| displaytext           | `Texte à afficher`              | Affiche le texte donné.                                                   |
+| displaytext           | `Texte à afficher`             | Affiche le texte donné.                                                    |
 | get                  	| `Nom de la variable`           	| Assigne une valeur récupérée depuis la console à une variable donnée. 	|
+| set                  	| `Nom de la variable`, `Valeur` 	| Assigne une valeur donnée à une variable donnée.                      |
+| compare               | `Première valeur`, `Seconde valeur` | Compare deux valeurs, et stocke le résultat dans l'interpréteur.    |
 | jump                 	| `Nom de la fonction`           	| Exécute le code appartenant à la fonction indiquée.                   	|
+| jumpeq               	| `Nom de la fonction`           	| Exécute le code appartenant à la fonction indiquée si la dernière comparaison indique que les comparés est == .                   	|
+| jumpdi               	| `Nom de la fonction`           	| Exécute le code appartenant à la fonction indiquée si la dernière comparaison indique que les comparés est != .                   	|
+| jumpgt               	| `Nom de la fonction`           	| Exécute le code appartenant à la fonction indiquée si la dernière comparaison indique que les comparés est > .                   	|
+| jumplt               	| `Nom de la fonction`           	| Exécute le code appartenant à la fonction indiquée si la dernière comparaison indique que les comparés est < .                   	|
+| jumpge               	| `Nom de la fonction`           	| Exécute le code appartenant à la fonction indiquée si la dernière comparaison indique que les comparés est >= .                   	|
+| jumple               	| `Nom de la fonction`           	| Exécute le code appartenant à la fonction indiquée si la dernière comparaison indique que les comparés est <= .                   	|
 | pop                  	| `Variable`                     	| Déplace la valeur située en haut de la pile dans la variable donnée.  	|
 | push                 	| `Valeur`                       	| Place la valeur donnée en haut de la pile.                            	|
-| set                  	| `Nom de la variable`, `Valeur` 	| Assigne une valeur donnée à une variable donnée.                      	|

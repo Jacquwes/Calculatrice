@@ -217,4 +217,18 @@ namespace Calculatrice::Algorithm {
 		m_stack.push_back(value);
 		return this;
 	}
+
+	int Algorithm::compare(double first, double second)
+	{
+		int result = 0;
+		if (first == second)
+			result = result | ComparisonResult::EQUAL;
+		if (first != second)
+			result = result | ComparisonResult::DIFFERENT;
+		if (first < second)
+			result = result | ComparisonResult::SMALLER;
+		if (first > second)
+			result = result | ComparisonResult::GREATER;
+		return result;
+	}
 }
