@@ -56,7 +56,8 @@ namespace Calculatrice::Operations {
 			while (divisor * (i + 1) <= reste)
 				i++;
 			// On ajoute i au quotient, multiplié par sa position
-			quotient += i * pow(10, -position++);
+			quotient += i * pow(10, static_cast<double>(-position));
+			position++;
 			// Le reste est calculé
 			reste -= (i * divisor);
 			// Puis multiplié par 10

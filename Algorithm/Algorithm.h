@@ -9,10 +9,17 @@ namespace Calculatrice::Algorithm {
 	// Enumère toutes les instructions du langage
 	enum class InstructionType
 	{
+		COMPARE,
 		DISPLAY,
 		DISPLAYTEXT,
 		GET,
 		JUMP,
+		JUMPDI,
+		JUMPEQ,
+		JUMPGE,
+		JUMPGT,
+		JUMPLE,
+		JUMPLT,
 		POP,
 		PUSH,
 		SET
@@ -21,10 +28,10 @@ namespace Calculatrice::Algorithm {
 	// Est utilisable avec des opérations sur les bits pour récupérer facilement le résultat d'une comparaison
 	enum ComparisonResult
 	{
-		EQUAL				= 0x1,
-		DIFFERENT			= 0x2,
-		GREATER				= 0x4,
-		SMALLER				= 0x8,
+		EQUAL = 0b1,
+		DIFFERENT = 0b10,
+		GREATER = 0b100,
+		SMALLER = 0b1000,
 	};
 
 	// Définition pour les classes Variable, Instruction et Function.
@@ -48,7 +55,7 @@ namespace Calculatrice::Algorithm {
 		std::string m_name;
 		std::string m_value;
 	};
-	
+
 	// Représente une instruction
 	class Instruction
 	{
@@ -76,7 +83,7 @@ namespace Calculatrice::Algorithm {
 	private:
 		std::string m_name;
 	};
-	
+
 	class Algorithm
 	{
 	public:
@@ -92,11 +99,11 @@ namespace Calculatrice::Algorithm {
 		Algorithm* push(std::string value);
 
 		int compare(double first, double second);
+		inline int lastComparison() { return m_lastComparison; }
 	private:
 		std::vector<std::string> m_stack;
-		int lastComparison{};
+		int m_lastComparison{};
 	};
-
 
 	Algorithm parseAlgorithm(std::string rawAlgorithm);
 }

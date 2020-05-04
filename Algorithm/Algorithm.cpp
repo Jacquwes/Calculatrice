@@ -12,7 +12,7 @@ namespace Calculatrice::Algorithm {
 		// Algorithme retourné par la fonction
 		Algorithm* finalAlgorithm = new Algorithm();
 		// Symboles servant à indenter le texte, permettant une souplesse de la syntaxe
-		std::vector<std::string> indentationSymbols = { "\n", "\r", "\t", ";" };
+		std::vector<std::string> indentationSymbols = { "\n", "\r", "\t" };
 		// Liste de toutes les lignes
 
 		std::vector<std::string> algorithm = Calculatrice::Utils::splitString(rawAlgorithm, indentationSymbols);
@@ -28,7 +28,7 @@ namespace Calculatrice::Algorithm {
 		for (auto& rawLine : algorithm)
 		{
 			// Commentaires
-			if (rawLine[0] != ' ')
+			if (rawLine[0] != ';')
 			{
 				// Sépare chaque mot de la ligne
 				std::vector<std::string> line = Calculatrice::Utils::splitString(rawLine, { " " });
@@ -41,7 +41,12 @@ namespace Calculatrice::Algorithm {
 				}
 
 				// Détermine l'instruction entrée, puis l'ajoute à l'algorithme si elle existe
-				if (line[0] == "display")
+				if (line[0] == "compare")
+				{
+					Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::COMPARE, { line[1], line[2] });
+					finalAlgorithm->currentFunction->instructionManager->add(instruction);
+				}
+				else if (line[0] == "display")
 				{
 					Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::DISPLAY, { line[1] });
 					finalAlgorithm->currentFunction->instructionManager->add(instruction);
@@ -65,6 +70,36 @@ namespace Calculatrice::Algorithm {
 					Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::JUMP, { line[1] });
 					finalAlgorithm->currentFunction->instructionManager->add(instruction);
 				}
+				else if (line[0] == "jumpeq")
+				{
+					Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::JUMPEQ, { line[1] });
+					finalAlgorithm->currentFunction->instructionManager->add(instruction);
+				}
+				else if (line[0] == "jumpdi")
+				{
+					Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::JUMPDI, { line[1] });
+					finalAlgorithm->currentFunction->instructionManager->add(instruction);
+				}
+				else if (line[0] == "jumpgt")
+				{
+					Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::JUMPGT, { line[1] });
+					finalAlgorithm->currentFunction->instructionManager->add(instruction);
+				}
+				else if (line[0] == "jumplt")
+				{
+					Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::JUMPLT, { line[1] });
+					finalAlgorithm->currentFunction->instructionManager->add(instruction);
+				}
+				else if (line[0] == "jumpge")
+				{
+					Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::JUMPGE, { line[1] });
+					finalAlgorithm->currentFunction->instructionManager->add(instruction);
+				}
+				else if (line[0] == "jumple")
+				{
+					Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::JUMPLE, { line[1] });
+					finalAlgorithm->currentFunction->instructionManager->add(instruction);
+				}
 				else if (line[0] == "pop")
 				{
 					Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::POP, { line[1] });
@@ -86,7 +121,7 @@ namespace Calculatrice::Algorithm {
 					finalAlgorithm->currentFunction = new Function(line[0]);
 					finalAlgorithm->functionManager->add(finalAlgorithm->currentFunction);
 				}
-				else
+				else if (line.size() != 0)
 					throw(Calculatrice::Utils::Error{ "Instruction inconnue.", "L'instruction \"" + line[0] + "\" que vous avez entrée n'est pas reconnu par le lecteur d'algorithme. Veuillez entrer \"?\" ou \"aide\" pour plus d'informations." });
 			}
 		}
@@ -134,6 +169,48 @@ namespace Calculatrice::Algorithm {
 			m_algorithm.variableManager->set(m_args[0], new Variable(m_args[0], value));
 			break;
 		}
+		case InstructionType::SET:
+		{
+			std::vector<std::string> expression = Calculatrice::Core::serialize(m_args[1]);
+			// S'exécute sur chaque membre de l'expression entrée. Sert à remplacer les noms de variables par leur valeur.
+			for (auto& i : expression)
+			{
+				// Si l'algorithme comporte une variable du nom du membre actuel
+				Variable* variable = m_algorithm.variableManager->get(i);
+				if (variable)
+				{
+					// Remplace ce membre par sa valeur
+					int indexInExpression = Calculatrice::Utils::firstIndexInVector(expression, variable->name());
+					expression[indexInExpression] = variable->value();
+				}
+			}
+			// Si la variable existe, alors elle mise à jour, sinon, elle est mise à jour.
+			m_algorithm.variableManager->set(m_args[0], new Variable(m_args[0], std::to_string(Calculatrice::Core::solve(expression))));
+			break;
+		}
+		case InstructionType::COMPARE:
+		{
+			std::vector<double> members{};
+			for (auto& arg : m_args)
+			{
+				std::vector<std::string> expression = Calculatrice::Core::serialize(arg);
+				// S'exécute sur chaque membre de l'expression entrée. Sert à remplacer les noms de variables par leur valeur.
+				for (auto& i : expression)
+				{
+					// Si l'algorithme comporte une variable du nom du membre actuel
+					Variable* variable = m_algorithm.variableManager->get(i);
+					if (variable)
+					{
+						// Remplace ce membre par sa valeur
+						int indexInExpression = Calculatrice::Utils::firstIndexInVector(expression, variable->name());
+						expression[indexInExpression] = variable->value();
+					}
+				}
+				members.push_back(Calculatrice::Core::solve(expression));
+			}
+			m_algorithm.compare(members[0], members[1]);
+			break;
+		}
 		case InstructionType::JUMP:
 		{
 			Function* function = m_algorithm.functionManager->get(m_args[0]);
@@ -141,6 +218,78 @@ namespace Calculatrice::Algorithm {
 				function->execute();
 			else
 				throw(Utils::Error{ "Fonction introuvable", "La fonction \"" + m_args[0] + "\" n'existe pas." });
+			break;
+		}
+		case InstructionType::JUMPEQ:
+		{
+			if ((m_algorithm.lastComparison() & ComparisonResult::EQUAL) == 0b1)
+			{
+				Function* function = m_algorithm.functionManager->get(m_args[0]);
+				if (function)
+					function->execute();
+				else
+					throw(Utils::Error{ "Fonction introuvable", "La fonction \"" + m_args[0] + "\" n'existe pas." });
+			}
+			break;
+		}
+		case InstructionType::JUMPDI:
+		{
+			if ((m_algorithm.lastComparison() & ComparisonResult::DIFFERENT) == 0b10)
+			{
+				Function* function = m_algorithm.functionManager->get(m_args[0]);
+				if (function)
+					function->execute();
+				else
+					throw(Utils::Error{ "Fonction introuvable", "La fonction \"" + m_args[0] + "\" n'existe pas." });
+			}
+			break;
+		}
+		case InstructionType::JUMPGE:
+		{
+			if (((m_algorithm.lastComparison() & ComparisonResult::EQUAL) == 0b1) || ((m_algorithm.lastComparison() & ComparisonResult::GREATER) == 0b100))
+			{
+				Function* function = m_algorithm.functionManager->get(m_args[0]);
+				if (function)
+					function->execute();
+				else
+					throw(Utils::Error{ "Fonction introuvable", "La fonction \"" + m_args[0] + "\" n'existe pas." });
+			}
+			break;
+		}
+		case InstructionType::JUMPGT:
+		{
+			if ((m_algorithm.lastComparison() & ComparisonResult::GREATER) == 0b100)
+			{
+				Function* function = m_algorithm.functionManager->get(m_args[0]);
+				if (function)
+					function->execute();
+				else
+					throw(Utils::Error{ "Fonction introuvable", "La fonction \"" + m_args[0] + "\" n'existe pas." });
+			}
+			break;
+		}
+		case InstructionType::JUMPLE:
+		{
+			if (((m_algorithm.lastComparison() & ComparisonResult::EQUAL) == 0b1) || ((m_algorithm.lastComparison() & ComparisonResult::SMALLER) == 0b1000))
+			{
+				Function* function = m_algorithm.functionManager->get(m_args[0]);
+				if (function)
+					function->execute();
+				else
+					throw(Utils::Error{ "Fonction introuvable", "La fonction \"" + m_args[0] + "\" n'existe pas." });
+			}
+			break;
+		}
+		case InstructionType::JUMPLT:
+		{
+			if ((m_algorithm.lastComparison() & ComparisonResult::SMALLER) == 0b1000)
+			{
+				Function* function = m_algorithm.functionManager->get(m_args[0]);
+				if (function)
+					function->execute();
+				else
+					throw(Utils::Error{ "Fonction introuvable", "La fonction \"" + m_args[0] + "\" n'existe pas." });
+			}
 			break;
 		}
 		case InstructionType::POP:
@@ -166,27 +315,6 @@ namespace Calculatrice::Algorithm {
 			m_algorithm.push(std::to_string(Calculatrice::Core::solve(expression)));
 			break;
 		}
-		case InstructionType::SET:
-		{
-			std::vector<std::string> expression = Calculatrice::Core::serialize(m_args[1]);
-			// S'exécute sur chaque membre de l'expression entrée. Sert à remplacer les noms de variables par leur valeur.
-			for (auto& i : expression)
-			{
-				// Si l'algorithme comporte une variable du nom du membre actuel
-				Variable* variable = m_algorithm.variableManager->get(i);
-				if (variable)
-				{
-					// Remplace ce membre par sa valeur
-					int indexInExpression = Calculatrice::Utils::firstIndexInVector(expression, variable->name());
-					expression[indexInExpression] = variable->value();
-				}
-			}
-			// Si la variable existe, alors elle mise à jour, sinon, elle est mise à jour.
-			m_algorithm.variableManager->set(m_args[0], new Variable(m_args[0], std::to_string(Calculatrice::Core::solve(expression))));
-			break;
-		}
-		default:
-			break;
 		}
 	}
 
@@ -222,13 +350,14 @@ namespace Calculatrice::Algorithm {
 	{
 		int result = 0;
 		if (first == second)
-			result = result | ComparisonResult::EQUAL;
+			result |= ComparisonResult::EQUAL;
 		if (first != second)
-			result = result | ComparisonResult::DIFFERENT;
+			result |= ComparisonResult::DIFFERENT;
 		if (first < second)
-			result = result | ComparisonResult::SMALLER;
+			result |= ComparisonResult::SMALLER;
 		if (first > second)
-			result = result | ComparisonResult::GREATER;
+			result |= ComparisonResult::GREATER;
+		m_lastComparison = result;
 		return result;
 	}
 }

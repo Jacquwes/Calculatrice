@@ -217,18 +217,18 @@ namespace Calculatrice::Core {
 
 		// Opérations sur les bits
 		// Arithmetic shift vers la gauche
-		else if (expression[1] == "<") result = std::stoll(expression[0]) << std::stoll(expression[2]);
+		else if (expression[1] == "<") result = static_cast<double>(std::stoll(expression[0]) << std::stoll(expression[2]));
 		// Arithmetic shift vers la droite
-		else if (expression[1] == ">") result = std::stoll(expression[0]) >> std::stoll(expression[2]);
+		else if (expression[1] == ">") result = static_cast<double>(std::stoll(expression[0]) >> std::stoll(expression[2]));
 		// Les Logic shifts demanderaient à ce que l'on change la fonction parse, cette option sera donc considérée dans le futur.
 		// OR
-		else if (expression[1] == "|") result = std::stoll(expression[0]) | std::stoll(expression[2]);
+		else if (expression[1] == "|") result = static_cast<double>(std::stoll(expression[0]) | std::stoll(expression[2]));
 		// XOR
-		else if (expression[1] == "\\") result = std::stoll(expression[0]) ^ std::stoll(expression[2]);
+		else if (expression[1] == "\\") result = static_cast<double>(std::stoll(expression[0]) ^ std::stoll(expression[2]));
 		// AND
-		else if (expression[1] == "&") result = std::stoll(expression[0]) & std::stoll(expression[2]);
+		else if (expression[1] == "&") result = static_cast<double>(std::stoll(expression[0]) & std::stoll(expression[2]));
 		// NOT
-		else if (expression[0] == "~") result = ~std::stoll(expression[1]);
+		else if (expression[0] == "~") result = static_cast<double>(~std::stoll(expression[1]));
 
 		// Ajoute le résultat de la première opération de l'expression et son reste à la nouvelle expression.
 		std::vector<std::string> newExpression{ std::to_string(result) };
