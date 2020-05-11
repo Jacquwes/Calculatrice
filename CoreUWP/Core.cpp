@@ -1,3 +1,4 @@
+ï»¿#include "pch.h"
 #include "Core.h"
 #include "Operations.h"
 #include "Utils.h"
@@ -5,7 +6,7 @@
 namespace Calculatrice::Core {
 	std::vector<std::string> parse(std::string rawExpression)
 	{
-		// Génère une liste des nombres de 0 à 9, et l'alphabet
+		// GÃ©nÃ¨re une liste des nombres de 0 Ã  9, et l'alphabet
 		std::vector<std::string> numbers, alphabet{};
 		for (int i = 48; i < 58; i++)
 			numbers.push_back(std::string(1, i));
@@ -16,46 +17,46 @@ namespace Calculatrice::Core {
 		std::vector<std::string> expression;
 		std::string intermediaire;
 
-		// Pour chaque caractère de l'expression
+		// Pour chaque caractÃ¨re de l'expression
 		for (size_t i = 0; i < rawExpression.size(); i++)
 		{
-			// Caractère actuel
+			// CaractÃ¨re actuel
 			std::string currentChar = std::string(1, rawExpression[i]);
-			// Si c'est le premier, ou si la valeur intermédiaire est vide
+			// Si c'est le premier, ou si la valeur intermÃ©diaire est vide
 			if (i == 0 || intermediaire == "")
 			{
 				intermediaire += currentChar;
 			}
 			else {
-				// Si le caractère actuel est un délimiteur
+				// Si le caractÃ¨re actuel est un dÃ©limiteur
 				bool isDelimiter = Calculatrice::Utils::vectorIncludes(Calculatrice::Utils::Constants::delimiters, currentChar);
 				if (isDelimiter)
 				{
-					// On ajoute la valeur intermédiaire
+					// On ajoute la valeur intermÃ©diaire
 					expression.push_back(intermediaire);
-					// Et le délimiteur actuel
+					// Et le dÃ©limiteur actuel
 					expression.push_back(currentChar);
-					// Puis on vide la valeur intermédiaire
+					// Puis on vide la valeur intermÃ©diaire
 					intermediaire = "";
 				}
-				// Si le caractère actuel ne fait pas partie des délimiteurs
+				// Si le caractÃ¨re actuel ne fait pas partie des dÃ©limiteurs
 				else
 				{
-					// Si le caractère actuel est une lettre
+					// Si le caractÃ¨re actuel est une lettre
 					bool isLetter = Calculatrice::Utils::vectorIncludes(alphabet, currentChar);
 					if (isLetter)
 					{
-						// Si le caractère précédent était aussi une lettre, on l'ajoute à la suite
+						// Si le caractÃ¨re prÃ©cÃ©dent Ã©tait aussi une lettre, on l'ajoute Ã  la suite
 						if (Calculatrice::Utils::vectorIncludes(alphabet, std::string(1, intermediaire.back())))
 							intermediaire += currentChar;
-						// Sinon, la valeur intermédiaire est ajoutée à l'expression
+						// Sinon, la valeur intermÃ©diaire est ajoutÃ©e Ã  l'expression
 						else
 						{
 							expression.push_back(intermediaire);
 							intermediaire = currentChar;
 						}
 					}
-					// Idem si le caractère actuel est un chiffre
+					// Idem si le caractÃ¨re actuel est un chiffre
 					else
 					{
 						if (Calculatrice::Utils::vectorIncludes(numbers, std::string(1, intermediaire.back())))
@@ -78,9 +79,9 @@ namespace Calculatrice::Core {
 
 	std::vector<std::string> serialize(std::string rawExpression)
 	{
-		// Sépare les nombres des symboles
+		// SÃ©pare les nombres des symboles
 		std::vector<std::string> expression = parse(rawExpression);
-		// Supprime les éléments vides de l'expression
+		// Supprime les Ã©lÃ©ments vides de l'expression
 		while (Calculatrice::Utils::vectorIncludes(expression, std::string("")))
 			expression.erase(expression.begin() + Calculatrice::Utils::firstIndexInVector(expression, std::string("")));
 
@@ -95,32 +96,32 @@ namespace Calculatrice::Core {
 		for (int i = 48; i < 58; i++)
 			numbers.push_back(std::string(1, i));
 
-		// Sert à respecter les lois de distributivité.
-		// Remplace toutes les soustractions par des additions du nombre opposé.
+		// Sert Ã  respecter les lois de distributivitÃ©.
+		// Remplace toutes les soustractions par des additions du nombre opposÃ©.
 		while (Calculatrice::Utils::vectorIncludes(expression, std::string("-")))
 		{
 			int index = Calculatrice::Utils::firstIndexInVector(expression, std::string("-"));
 			expression[index] = "+";
 
-			// static_cast<size_t>(index) sert à considerer index comme une variable sur 8 octets plutot que 4.
-			// Cela permet d'éviter des erreurs sur les très (très) grandes opérations, et le compilateur
-			//		considère ça comme une erreur.
+			// static_cast<size_t>(index) sert Ã  considerer index comme une variable sur 8 octets plutot que 4.
+			// Cela permet d'Ã©viter des erreurs sur les trÃ¨s (trÃ¨s) grandes opÃ©rations, et le compilateur
+			//		considÃ¨re Ã§a comme une erreur.
 
-			// Si - est devant une parenthèse
+			// Si - est devant une parenthÃ¨se
 			if (expression[static_cast<size_t>(index) + 1] == "(")
 			{
-				// Si - est le premier caractère de l'expression
+				// Si - est le premier caractÃ¨re de l'expression
 				if (index == 0)
-					expression.erase(expression.begin()); // Supprime le + ajouté
+					expression.erase(expression.begin()); // Supprime le + ajoutÃ©
 				expression.insert(expression.begin() + (index == 0 ? index : index + 1), { "-1", "*" });
 			}
-			// Si - est le premier caractère de l'expression
+			// Si - est le premier caractÃ¨re de l'expression
 			else if (index == 0)
 			{
 				expression.erase(expression.begin());
 				expression[0] = "-" + expression[0];
 			}
-			// Si - est derrière un signe
+			// Si - est derriÃ¨re un signe
 			else if (Calculatrice::Utils::vectorIncludes(Calculatrice::Utils::Constants::delimiters, expression[static_cast<size_t>(index) - 1]))
 			{
 				expression.erase(expression.begin() + index);
@@ -138,36 +139,36 @@ namespace Calculatrice::Core {
 		// Retourne l'expression si elle ne comporte plus qu'un seul membre.
 		if (expression.size() == 1) return std::stod(expression[0]);
 
-		// Calcule en premier les calculs entre parenthèses.
+		// Calcule en premier les calculs entre parenthÃ¨ses.
 		while (Calculatrice::Utils::vectorIncludes(expression, std::string("(")))
 		{
-			// Expression entre les parenthèses les plus intérieures.
+			// Expression entre les parenthÃ¨ses les plus intÃ©rieures.
 			std::vector<std::string> deepestExpression{};
-			// Nouvelle expression, dont l'expression la plus intérieure à été résolue.
+			// Nouvelle expression, dont l'expression la plus intÃ©rieure Ã  Ã©tÃ© rÃ©solue.
 			std::vector<std::string> newExpression{};
-			// index des parenthèses de l'expression la plus intérieure.
+			// index des parenthÃ¨ses de l'expression la plus intÃ©rieure.
 			std::vector<int> bounds = Calculatrice::Utils::findDeepestExpression(expression);
 
-			// Assigne l'expression la plus intérieure à son vector.
+			// Assigne l'expression la plus intÃ©rieure Ã  son vector.
 			std::copy(expression.begin() + bounds[0] + 1, expression.begin() + bounds[1], std::back_inserter(deepestExpression));
 
-			// Sert à respecter les lois de priorités de calcul.
-			// Encadre de parenthèses les opérations qui se suivent.
-			// Ces instructions ne sont pas situées dans la fonction de sérialisation,
-			// car les parenthèses provoqueraient des bugs.
+			// Sert Ã  respecter les lois de prioritÃ©s de calcul.
+			// Encadre de parenthÃ¨ses les opÃ©rations qui se suivent.
+			// Ces instructions ne sont pas situÃ©es dans la fonction de sÃ©rialisation,
+			// car les parenthÃ¨ses provoqueraient des bugs.
 			deepestExpression = Calculatrice::Utils::frameAlignedOperations(deepestExpression, "^");
 			deepestExpression = Calculatrice::Utils::frameAlignedOperations(deepestExpression, "rcn");
 			deepestExpression = Calculatrice::Utils::frameAlignedOperations(deepestExpression, "*");
 			deepestExpression = Calculatrice::Utils::frameAlignedOperations(deepestExpression, "/");
 
-			// Supprime toutes les parenthèses de l'expression la plus intérieure
+			// Supprime toutes les parenthÃ¨ses de l'expression la plus intÃ©rieure
 			for (auto& i : { std::string("("), std::string(")") })
 				while (Calculatrice::Utils::vectorIncludes(deepestExpression, i))
 					deepestExpression.erase(deepestExpression.begin() + Calculatrice::Utils::firstIndexInVector(deepestExpression, i));
 
-			// Ajoute la première partie de l'expression au vector de la nouvelle expression.
+			// Ajoute la premiÃ¨re partie de l'expression au vector de la nouvelle expression.
 			std::copy(expression.begin(), expression.begin() + bounds[0], std::back_inserter(newExpression));
-			// Ajoute l'expression la plus intérieure à la nouvelle.
+			// Ajoute l'expression la plus intÃ©rieure Ã  la nouvelle.
 			newExpression.push_back(std::to_string(solve(deepestExpression)));
 			// Ajoute la fin de l'expression
 			std::copy(expression.begin() + bounds[1] + 1, expression.end(), std::back_inserter(newExpression));
@@ -177,7 +178,7 @@ namespace Calculatrice::Core {
 
 		if (expression.size() == 1) return std::stod(expression[0]);
 
-		// Résoud l'opération des deux premiers membres de l'expression.
+		// RÃ©soud l'opÃ©ration des deux premiers membres de l'expression.
 		double result{};
 		int operationSize = 3;
 		if (expression[1] == "+") result = std::stod(expression[0]) + std::stod(expression[2]);
@@ -215,12 +216,12 @@ namespace Calculatrice::Core {
 		// Logarithme base x
 		else if (expression[1] == "log") result = Calculatrice::Operations::division(log(std::stod(expression[2])), log(std::stod(expression[0])), 10);
 
-		// Opérations sur les bits
+		// OpÃ©rations sur les bits
 		// Arithmetic shift vers la gauche
 		else if (expression[1] == "LS") result = static_cast<double>(std::stoll(expression[0]) << std::stoll(expression[2]));
 		// Arithmetic shift vers la droite
 		else if (expression[1] == "RS") result = static_cast<double>(std::stoll(expression[0]) >> std::stoll(expression[2]));
-		// Les Logic shifts demanderaient à ce que l'on change la fonction parse, cette option sera donc considérée dans le futur.
+		// Les Logic shifts demanderaient Ã  ce que l'on change la fonction parse, cette option sera donc considÃ©rÃ©e dans le futur.
 		// OR
 		else if (expression[1] == "OR") result = static_cast<double>(std::stoll(expression[0]) | std::stoll(expression[2]));
 		// XOR
@@ -230,11 +231,11 @@ namespace Calculatrice::Core {
 		// NOT
 		else if (expression[0] == "NOT") result = static_cast<double>(~std::stoll(expression[1]));
 
-		// Ajoute le résultat de la première opération de l'expression et son reste à la nouvelle expression.
+		// Ajoute le rÃ©sultat de la premiÃ¨re opÃ©ration de l'expression et son reste Ã  la nouvelle expression.
 		std::vector<std::string> newExpression{ std::to_string(result) };
 		std::copy(expression.begin() + operationSize, expression.end(), std::back_inserter(newExpression));
 
-		// Fonctionne par récursivité.
+		// Fonctionne par rÃ©cursivitÃ©.
 		return solve(newExpression);
 	}
 }
