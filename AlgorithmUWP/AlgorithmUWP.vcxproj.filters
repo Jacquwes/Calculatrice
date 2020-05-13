@@ -25,4 +25,7 @@
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="specs.md" />
+  </ItemGroup>
 </Project>
