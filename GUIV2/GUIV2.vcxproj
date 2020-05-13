@@ -181,6 +181,9 @@
     <ClInclude Include="Editor.xaml.h">
       <DependentUpon>Editor.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="FunctionEditor.xaml.h">
+      <DependentUpon>FunctionEditor.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
@@ -195,6 +198,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Editor.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FunctionEditor.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MainPage.xaml">
@@ -221,6 +227,9 @@
     </ClCompile>
     <ClCompile Include="Editor.xaml.cpp">
       <DependentUpon>Editor.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="FunctionEditor.xaml.cpp">
+      <DependentUpon>FunctionEditor.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="MainPage.xaml.cpp">
       <DependentUpon>MainPage.xaml</DependentUpon>

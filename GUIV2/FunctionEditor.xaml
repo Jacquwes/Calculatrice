@@ -1,0 +1,18 @@
+﻿<UserControl
+    x:Class="GUIV2.FunctionEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GUIV2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="100"
+    d:DesignWidth="400">
+
+    <RelativePanel>
+        <TextBox x:Name="name" HorizontalAlignment="Left"  Text="" TextWrapping="Wrap" VerticalAlignment="Top" PlaceholderText="Nom de la fonction" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Width="140" Height="32" Margin="5,5,5,5"/>
+        <Button x:Name="deleteButton" Content="Supprimer"   VerticalAlignment="Top" Width="85" Height="32" RelativePanel.RightOf="name" Margin="0,5,5,5"/>
+        <TextBox x:Name="instructions"  Text="" TextWrapping="Wrap" PlaceholderText="Instructions" RelativePanel.Below="name" RelativePanel.AlignLeftWithPanel="True" AcceptsReturn="True" Height="Auto" Width="390" Margin="5,0,0,0"/>
+
+    </RelativePanel>
+</UserControl>

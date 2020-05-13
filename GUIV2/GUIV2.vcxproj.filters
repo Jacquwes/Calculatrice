@@ -50,6 +50,9 @@
   <ItemGroup>
     <Page Include="MainPage.xaml" />
     <Page Include="Editor.xaml" />
+    <Page Include="FunctionEditor.xaml">
+      <Filter>Common</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="GUIV2_TemporaryKey.pfx" />

@@ -5,4 +5,10 @@
     xmlns:local="using:GUIV2"
     RequestedTheme="Dark">
 
+    <Application.Resources>
+        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Black" Opacity="0.7"/>
+        <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Transparent"/>
+        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="White" Opacity="0.8"/>
+    </Application.Resources>
+
 </Application>

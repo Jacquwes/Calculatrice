@@ -23,15 +23,46 @@
             <Frame>
                 <Grid>
                     <TextBlock HorizontalAlignment="Left" Margin="45,20,0,0" Text="Editeur d'algorithme" TextWrapping="Wrap" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}"/>
-                    <RelativePanel Margin="0,80,0,0">
-                        <TextBox x:Name="algorithmEditor" TextWrapping="Wrap" />
-                        <TextBox x:Name="inputAlgorithm" />
-                        <TextBox x:Name="outputAlgorithm" />
-                        <Button x:Name="saveButton" Content="Sauvegarder" Click="saveButton_Click"/>
-                        <Button x:Name="executeButton" Content="Executer" Click="executeButton_Click"/>
-                        <Button x:Name="openButton" Content="ouvrir" Click="openButton_Click"/>
-                        <Button x:Name="documentationButton" Content="docu" Click="documentationButton_Click"/>
-                    </RelativePanel>
+                    <Grid Margin="5,80,5,5" RowSpacing="2" ColumnSpacing="2" Width="1590">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="5">
+                            <StackPanel x:Name="algorithmEditor">
+                                <local:FunctionEditor />
+
+                            </StackPanel>
+                        </ScrollViewer>
+                        <RelativePanel Grid.Column="5" Grid.Row="1">
+                            <TextBlock x:Name="outputAlgorithmLabel" Grid.Column="5" HorizontalAlignment="Left" Grid.Row="1" Text="Sortie du programme :" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
+                            <TextBlock x:Name="outputAlgorithm" RelativePanel.Below="outputAlgorithmLabel" />
+                        </RelativePanel>
+                        <Button x:Name="saveButton" Click="saveButton_Click" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" Margin="5,5,5,5">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" />
+                        </Button>
+                        <Button x:Name="saveAsButton"  Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" Margin="5,5,5,5">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE792;" />
+                        </Button>
+                        <Button x:Name="executeButton" Click="executeButton_Click" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center" Margin="5,5,5,5">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE893;" />
+                        </Button>
+                        <Button x:Name="openButton" Click="openButton_Click" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" Margin="5,5,5,5">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8DA;" />
+                        </Button>
+                        <Button x:Name="documentationButton" Click="documentationButton_Click" Grid.Row="2" HorizontalAlignment="Center" Margin="5,5,5,5">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;" />
+                        </Button>
+                    </Grid>
                 </Grid>
             </Frame>
         </NavigationView>
