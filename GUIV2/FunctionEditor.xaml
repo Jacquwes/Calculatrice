@@ -6,8 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="100"
-    d:DesignWidth="400">
+    d:DesignWidth="400" d:DesignHeight="80">
 
     <RelativePanel>
         <TextBox x:Name="name" HorizontalAlignment="Left"  Text="" TextWrapping="Wrap" VerticalAlignment="Top" PlaceholderText="Nom de la fonction" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Width="140" Height="32" Margin="5,5,5,5"/>

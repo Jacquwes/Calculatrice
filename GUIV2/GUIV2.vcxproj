@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3c34064b-066e-40fb-aa41-c4cf263914df}</ProjectGuid>
@@ -249,8 +249,14 @@
     <None Include="GUIV2_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AlgorithmUWP\AlgorithmUWP.vcxproj">
+      <Project>{421f7161-6702-4d7b-9484-b5b440691071}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\CoreUWP\CoreUWP.vcxproj">
       <Project>{9e699aba-1e5e-4ecf-9663-2d67beae999f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\EthyfierCalculatorWrapper\EthyfierCalculatorWrapper.vcxproj">
+      <Project>{cc39ebc5-adfe-474c-92dc-1f01d5370732}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

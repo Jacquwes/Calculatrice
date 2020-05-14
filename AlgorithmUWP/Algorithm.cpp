@@ -2,15 +2,13 @@
 #include "CoreUWP/Core.h"
 #include "CoreUWP/Utils.h"
 
-#include <iostream>
-#include <string>
-#include <vector>
+#include "pch.h"
 
 namespace Calculatrice::Algorithm {
-	Algorithm parseAlgorithm(std::string rawAlgorithm)
+	Algorithm parseAlgorithm(std::string rawAlgorithm, std::function<void(std::string)> outputFunction)
 	{
 		// Algorithme retourné par la fonction
-		Algorithm* finalAlgorithm = new Algorithm();
+		Algorithm* finalAlgorithm = new Algorithm(outputFunction);
 		// Symboles servant à indenter le texte, permettant une souplesse de la syntaxe
 		std::vector<std::string> indentationSymbols = { "\n", "\r", "\t" };
 		// Liste de toutes les lignes
@@ -58,11 +56,6 @@ namespace Calculatrice::Algorithm {
 					for (auto& word : line)
 						args.push_back(word);
 					Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::DISPLAYTEXT, args);
-					finalAlgorithm->currentFunction->instructionManager->add(instruction);
-				}
-				else if (line[0] == "get")
-				{
-					Instruction* instruction = new Instruction(*finalAlgorithm, InstructionType::GET, { line[1] });
 					finalAlgorithm->currentFunction->instructionManager->add(instruction);
 				}
 				else if (line[0] == "jump")
@@ -122,12 +115,12 @@ namespace Calculatrice::Algorithm {
 					finalAlgorithm->functionManager->add(finalAlgorithm->currentFunction);
 				}
 				else if (line.size() != 0)
-					throw(Calculatrice::Utils::Error{ "Instruction inconnue.", "L'instruction \"" + line[0] + "\" que vous avez entrée n'est pas reconnu par le lecteur d'algorithme. Veuillez entrer \"?\" ou \"aide\" pour plus d'informations." });
+					throw(Calculatrice::Utils::Error{ "Instruction inconnue.", "L'instruction \"" + line[0] + "\" que vous avez entree n'est pas reconnue par le lecteur d'algorithme. Veuillez entrer \"?\" ou \"aide\" pour plus d'informations." });
 			}
 		}
 
 		if (!finalAlgorithm->functionManager->get("main"))
-			throw(Calculatrice::Utils::Error{ "Point d'entrée du programme introuvable.", "Aucun point d'entrée n'a été trouvé dans votre programme. Vous devez créer une fonction du nom de \"main\"" });
+			throw(Calculatrice::Utils::Error{ "Point d'entree du programme introuvable.", "Aucun point d'entree n'a ete trouve dans votre programme. Vous devez creer une fonction du nom de \"main\"" });
 
 		return *finalAlgorithm;
 	}
@@ -152,21 +145,14 @@ namespace Calculatrice::Algorithm {
 				}
 			}
 			// Affiche le résultat
-			std::cout << Calculatrice::Core::solve(expression) << std::endl;
+			m_algorithm.log(std::to_string(Calculatrice::Core::solve(expression)));
 			break;
 		}
 		case InstructionType::DISPLAYTEXT:
 		{
 			for (auto& word : m_args)
-				std::cout << word << " ";
-			std::cout << std::endl;
-			break;
-		}
-		case InstructionType::GET:
-		{
-			std::string value;
-			std::cin >> value;
-			m_algorithm.variableManager->set(m_args[0], new Variable(m_args[0], value));
+				m_algorithm.log(word + " ");
+			m_algorithm.log("\n");
 			break;
 		}
 		case InstructionType::SET:
@@ -334,7 +320,7 @@ namespace Calculatrice::Algorithm {
 	std::string Algorithm::pop()
 	{
 		if (m_stack.size() == 0)
-			throw(Utils::Error{ "Pile d'arguments vide.", "Vous avez tenté d'utiliser l'instruction \"pop\" alors que la pile était vide." });
+			throw(Utils::Error{ "Pile d'arguments vide.", "Vous avez tente d'utiliser l'instruction \"pop\" alors que la pile etait vide." });
 		std::string value = m_stack.back();
 		m_stack.pop_back();
 		return value;

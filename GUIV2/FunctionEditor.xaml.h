@@ -16,7 +16,9 @@ namespace GUIV2
 	{
 	public:
 		FunctionEditor();
-		void functionName(String^ value);
-		void functionInstructions(String^ value);
+		FunctionEditor^ setName(String^ value);
+		FunctionEditor^ setInstructions(String^ value);
+		inline String^ getName() { return name->Text; }
+		inline String^ getInstructions() { return instructions->Text; }
 	};
 }

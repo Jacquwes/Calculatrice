@@ -26,13 +26,15 @@ FunctionEditor::FunctionEditor()
 	InitializeComponent();
 }
 
-void GUIV2::FunctionEditor::functionName(String^ value)
+FunctionEditor^ GUIV2::FunctionEditor::setName(String^ value)
 {
 	name->Text = value;
+	return this;
 }
 
-void GUIV2::FunctionEditor::functionInstructions(String^ value)
+FunctionEditor^ GUIV2::FunctionEditor::setInstructions(String^ value)
 {
 	instructions->Text = value;
+	return this;
 }
 

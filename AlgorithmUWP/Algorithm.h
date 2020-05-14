@@ -1,8 +1,5 @@
 ﻿#pragma once
 
-#include <string>
-#include <vector>
-
 #include "Manager.hpp"
 
 namespace Calculatrice::Algorithm {
@@ -12,7 +9,6 @@ namespace Calculatrice::Algorithm {
 		COMPARE,
 		DISPLAY,
 		DISPLAYTEXT,
-		GET,
 		JUMP,
 		JUMPDI,
 		JUMPEQ,
@@ -87,7 +83,7 @@ namespace Calculatrice::Algorithm {
 	class Algorithm
 	{
 	public:
-		inline Algorithm() : variableManager(new Manager::Manager<Variable>), functionManager(new Manager::Manager<Function>), currentFunction(nullptr) {}
+		inline Algorithm(std::function<void(std::string)> outputFunction) : m_outputFunction(outputFunction), variableManager(new Manager::Manager<Variable>), functionManager(new Manager::Manager<Function>), currentFunction(nullptr) {}
 
 		void execute();
 
@@ -100,10 +96,13 @@ namespace Calculatrice::Algorithm {
 
 		int compare(double first, double second);
 		inline int lastComparison() { return m_lastComparison; }
+
+		inline void log(std::string message) { m_outputFunction(message); }
 	private:
-		std::vector<std::string> m_stack;
 		int m_lastComparison{};
+		std::function<void(std::string)> m_outputFunction;
+		std::vector<std::string> m_stack;
 	};
 
-	Algorithm parseAlgorithm(std::string rawAlgorithm);
+	Algorithm parseAlgorithm(std::string rawAlgorithm, std::function<void(std::string)> outputFunction);
 }

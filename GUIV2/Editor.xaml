@@ -23,11 +23,11 @@
             <Frame>
                 <Grid>
                     <TextBlock HorizontalAlignment="Left" Margin="45,20,0,0" Text="Editeur d'algorithme" TextWrapping="Wrap" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}"/>
-                    <Grid Margin="5,80,5,5" RowSpacing="2" ColumnSpacing="2" Width="1590">
+                    <Grid Margin="5,80,5,5" RowSpacing="5" ColumnSpacing="5" Width="1590">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="33"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="10*"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -38,20 +38,17 @@
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
                         <ScrollViewer Grid.Row="1" Grid.ColumnSpan="5">
-                            <StackPanel x:Name="algorithmEditor">
-                                <local:FunctionEditor />
-
-                            </StackPanel>
+                            <ScrollViewer.Background>
+                                <SolidColorBrush Color="Black" Opacity="0.5"/>
+                            </ScrollViewer.Background>
+                            <StackPanel x:Name="algorithmEditor"/>
                         </ScrollViewer>
-                        <RelativePanel Grid.Column="5" Grid.Row="1">
-                            <TextBlock x:Name="outputAlgorithmLabel" Grid.Column="5" HorizontalAlignment="Left" Grid.Row="1" Text="Sortie du programme :" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
+                        <RelativePanel Grid.Column="5" Grid.Row="0" Grid.RowSpan="2">
+                            <TextBlock x:Name="outputAlgorithmLabel" HorizontalAlignment="Left" Text="Sortie du programme :" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
                             <TextBlock x:Name="outputAlgorithm" RelativePanel.Below="outputAlgorithmLabel" />
                         </RelativePanel>
-                        <Button x:Name="saveButton" Click="saveButton_Click" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" Margin="5,5,5,5">
+                        <Button x:Name="saveButton" Click="saveButton_Click" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" Margin="5,5,5,5">
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" />
-                        </Button>
-                        <Button x:Name="saveAsButton"  Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" Margin="5,5,5,5">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE792;" />
                         </Button>
                         <Button x:Name="executeButton" Click="executeButton_Click" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center" Margin="5,5,5,5">
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE893;" />
@@ -59,9 +56,11 @@
                         <Button x:Name="openButton" Click="openButton_Click" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" Margin="5,5,5,5">
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8DA;" />
                         </Button>
-                        <Button x:Name="documentationButton" Click="documentationButton_Click" Grid.Row="2" HorizontalAlignment="Center" Margin="5,5,5,5">
+                        <Button x:Name="documentationButton" Click="documentationButton_Click" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" Margin="5,5,5,5">
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;" />
                         </Button>
+                        <Button x:Name="addFunction" Content="Ajouter une fonction" Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" Click="addFunction_Click"/>
+                        <Button x:Name="closeAlgorithm" Content="Fermer cet algorithme" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" Click="closeAlgorithm_Click"/>
                     </Grid>
                 </Grid>
             </Frame>

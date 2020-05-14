@@ -23,5 +23,10 @@ namespace GUIV2
 		void executeButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void openButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void documentationButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void addFunction_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void closeAlgorithm_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+
+		void closeAlgorithmFunctions(Windows::UI::Popups::IUICommand^ command);
+		void saveAlgorithm(Windows::UI::Popups::IUICommand^ command);
 	};
 }
