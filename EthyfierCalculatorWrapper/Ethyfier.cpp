@@ -30,7 +30,7 @@ namespace Ethyfier
 			else
 				body_size++;
 
-			payload.insert(payload.end(), { var_name_size, (int)var_type, address });
+			payload.insert(payload.end(), { var_name_size, (int)var_type, address & 0xff, (address & 0xff00) >> 8 });
 			payload.insert(payload.end(), var_name.begin(), var_name.end());
 		}
 
@@ -105,7 +105,9 @@ namespace Ethyfier
 			case bitType::ADDR:
 			{
 				variableExtended* var = variables[variable_index];
-				var->address = rawPayload[cursor];
+				int lowerPart = rawPayload[cursor++];
+				int higherPart = rawPayload[cursor] << 8;
+				var->address = lowerPart | higherPart;
 				bitType = bitType::NAME;
 				break;
 			}
