@@ -83,7 +83,7 @@ namespace Calculatrice::Algorithm {
 	class Algorithm
 	{
 	public:
-		inline Algorithm(std::function<void(std::string)> outputFunction) : m_outputFunction(outputFunction), variableManager(new Manager::Manager<Variable>), functionManager(new Manager::Manager<Function>), currentFunction(nullptr) {}
+		inline Algorithm(std::function<void(std::string)>& outputFunction) : m_outputFunction(outputFunction), variableManager(new Manager::Manager<Variable>), functionManager(new Manager::Manager<Function>), currentFunction(nullptr) {}
 
 		void execute();
 
@@ -100,9 +100,9 @@ namespace Calculatrice::Algorithm {
 		inline void log(std::string message) { m_outputFunction(message); }
 	private:
 		int m_lastComparison{};
-		std::function<void(std::string)> m_outputFunction;
+		std::function<void(std::string)>& m_outputFunction;
 		std::vector<std::string> m_stack;
 	};
 
-	Algorithm parseAlgorithm(std::string rawAlgorithm, std::function<void(std::string)> outputFunction);
+	Algorithm parseAlgorithm(std::string rawAlgorithm, std::function<void(std::string)>& outputFunction);
 }

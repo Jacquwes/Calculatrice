@@ -5,7 +5,7 @@
 #include "pch.h"
 
 namespace Calculatrice::Algorithm {
-	Algorithm parseAlgorithm(std::string rawAlgorithm, std::function<void(std::string)> outputFunction)
+	Algorithm parseAlgorithm(std::string rawAlgorithm, std::function<void(std::string)>& outputFunction)
 	{
 		// Algorithme retourné par la fonction
 		Algorithm* finalAlgorithm = new Algorithm(outputFunction);
@@ -145,7 +145,7 @@ namespace Calculatrice::Algorithm {
 				}
 			}
 			// Affiche le résultat
-			m_algorithm.log(std::to_string(Calculatrice::Core::solve(expression)));
+			m_algorithm.log(std::to_string(Calculatrice::Core::solve(expression)) + "\n");
 			break;
 		}
 		case InstructionType::DISPLAYTEXT:

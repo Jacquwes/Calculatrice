@@ -49,19 +49,19 @@ void GUIV2::Editor::saveButton_Click(Platform::Object^ sender, Windows::UI::Xaml
 void GUIV2::Editor::executeButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	std::string rawAlgorithm{};
+	outputAlgorithm->Text = "";
 	for (int i = 0; i < algorithmEditor->Children->Size; i++)
 	{
 		auto function = (FunctionEditor^)algorithmEditor->Children->GetAt(i);
-		rawAlgorithm += Utils::platformToStdString(function->getName()) + "\n" + Utils::platformToStdString(function->getInstructions());
+		rawAlgorithm += Utils::platformToStdString(function->getName()) + "\r" + Utils::platformToStdString(function->getInstructions()) + "\r";
 	}
 	try
 	{
-		Calculatrice::Algorithm::parseAlgorithm(
-			rawAlgorithm, 
-			[this](std::string message) -> void 
-			{ 
-				outputAlgorithm->Text += Utils::stdToPlatformString(message); 
-			}).execute();
+		std::function<void(std::string)> logFunction = [this](std::string message) -> void
+		{
+			outputAlgorithm->Text += Utils::stdToPlatformString(message);
+		};
+		Calculatrice::Algorithm::parseAlgorithm(rawAlgorithm, logFunction).execute();
 	}
 	catch (const Calculatrice::Utils::Error& e)
 	{
@@ -83,6 +83,7 @@ void GUIV2::Editor::openButton_Click(Platform::Object^ sender, Windows::UI::Xaml
 		.then([](StorageFile^ file) { if (file) return FileIO::ReadBufferAsync(file); })
 		.then([this](Streams::IBuffer^ fileBuffer)
 			{
+				algorithmEditor->Children->Clear();
 				auto dataReader = Streams::DataReader::FromBuffer(fileBuffer);
 				auto bufferArray = ref new Array<unsigned char, 1>(fileBuffer->Length);
 				dataReader->ReadBytes(bufferArray);
@@ -104,7 +105,8 @@ void GUIV2::Editor::documentationButton_Click(Platform::Object^ sender, Windows:
 
 void GUIV2::Editor::addFunction_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	algorithmEditor->Children->Append(ref new FunctionEditor());
+	auto functionEditor = ref new FunctionEditor();
+	algorithmEditor->Children->Append(functionEditor);
 }
 
 void GUIV2::Editor::closeAlgorithmFunctions(IUICommand^ command)

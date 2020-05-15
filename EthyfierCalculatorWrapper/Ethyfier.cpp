@@ -13,7 +13,7 @@ namespace Ethyfier
 
 		// Calculate the header size
 		for (size_t i = 0; i < variables.size(); i++)
-			header_size += 3 + static_cast<int>(variables[i].name.size());
+			header_size += 4 + static_cast<int>(variables[i].name.size());
 
 		// Create header
 		for (const struct variable var : variables)
