@@ -20,14 +20,21 @@ get nom_de_variable
 nom_de_la_fonction
 ; Le code exécuté par cette fonction doit être précédé d'une tabulation.
 code à exéctuer
-jump nom_de_la_fonction
+; Exemple d'utilisation des arguments
+set variableA 45
 ```
 
 ## 2. Structure d'un programme
 
 Un programme ALG doit forcément avoir une fonction nommée `main`.
+
 Aucune instruction ne doit se situer en dehors d'une fonction.
+
 Toutes les variables déclarées sont globales.
+
+Un algorithme ne doit contenir que des caractères anglais.
+
+Une variable ne peut pas avoir de chiffre ni de ponctuation dans son nom.
 
 ## 3. Instructions utilisables
 
@@ -35,7 +42,6 @@ Toutes les variables déclarées sont globales.
 |----------------------	|--------------------------------	|-----------------------------------------------------------------------	|
 | display              	| `Valeur`                       	| Affiche la valeur donnée.                                             	|
 | displaytext           | `Texte à afficher`             | Affiche le texte donné.                                                    |
-| get                  	| `Nom de la variable`           	| Assigne une valeur récupérée depuis la console à une variable donnée. 	|
 | set                  	| `Nom de la variable`, `Valeur` 	| Assigne une valeur donnée à une variable donnée.                      |
 | compare               | `Première valeur`, `Seconde valeur` | Compare deux valeurs, et stocke le résultat dans l'interpréteur.    |
 | jump                 	| `Nom de la fonction`           	| Exécute le code appartenant à la fonction indiquée.                   	|
