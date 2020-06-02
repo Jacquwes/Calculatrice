@@ -4,6 +4,7 @@
 
 namespace Ethyfier
 {
+	// Types supportés par Ethyfier
 	enum class types
 	{
 		STR,
@@ -11,16 +12,21 @@ namespace Ethyfier
 		BOOL,
 	};
 
+	// Représente une variable
 	struct variable {
 		std::string name;
+		// Variable pouvant avoir plusieurs types
 		std::variant<std::string, int, bool> value;
 	};
 
-	std::vector<int> serialize(std::vector<struct variable> variables);
+	//Convertit une liste de variables en payload Ethyfier
+	std::vector<int> serialize(std::vector<variable> variables);
 
+	// Permet d'utiliser un payload Ethyfier
 	class Payload
 	{
 	public:
+		// Constructeur, à partir d'un payload Ethyfier
 		Payload(std::vector<int> rawPayload);
 
 

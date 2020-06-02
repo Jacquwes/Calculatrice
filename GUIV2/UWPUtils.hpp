@@ -3,6 +3,7 @@
 #include "pch.h"
 
 namespace Utils {
+	// Convertit les différents types de string
 	inline Platform::String^ stdToPlatformString(const std::string& string)
 	{
 		return ref new Platform::String(std::wstring(string.begin(), string.end()).c_str());

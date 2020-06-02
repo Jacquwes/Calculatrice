@@ -7,6 +7,7 @@ namespace Ethyfier::UWP
 	std::vector<Function> getFunctions(std::vector<int> data)
 	{
 		std::vector<Function> functions;
+		// Ajoute une structure correspondante à chaque fonction du payload
 		for (auto& function : Payload(data).variables())
 		{
 			std::wstring name(function.name.begin(), function.name.end());

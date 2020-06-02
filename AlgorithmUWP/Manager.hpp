@@ -25,6 +25,7 @@ namespace Calculatrice::Algorithm::Manager
 				m_items.end(),
 				[&](T* i) { return i->id() == id; }
 			);
+			// Si l'item recherché n'a pas été trouvé
 			if (item == m_items.end())
 				return nullptr;
 			else

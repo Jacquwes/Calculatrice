@@ -114,11 +114,13 @@ namespace Calculatrice::Algorithm {
 					finalAlgorithm->currentFunction = new Function(line[0]);
 					finalAlgorithm->functionManager->add(finalAlgorithm->currentFunction);
 				}
+				// Sinon, une erreur est créée
 				else if (line.size() != 0)
 					throw(Calculatrice::Utils::Error{ "Instruction inconnue.", "L'instruction \"" + line[0] + "\" que vous avez entree n'est pas reconnue par le lecteur d'algorithme. Veuillez entrer \"?\" ou \"aide\" pour plus d'informations." });
 			}
 		}
 
+		// Si aucune fonction du nom de "main" n'a été trouvée
 		if (!finalAlgorithm->functionManager->get("main"))
 			throw(Calculatrice::Utils::Error{ "Point d'entree du programme introuvable.", "Aucun point d'entree n'a ete trouve dans votre programme. Vous devez creer une fonction du nom de \"main\"" });
 
@@ -199,16 +201,18 @@ namespace Calculatrice::Algorithm {
 		}
 		case InstructionType::JUMP:
 		{
+			// Retrouve la fonction donnée
 			Function* function = m_algorithm.functionManager->get(m_args[0]);
 			if (function)
 				function->execute();
+			// Si elle est introuvable, on crée une erreur
 			else
 				throw(Utils::Error{ "Fonction introuvable", "La fonction \"" + m_args[0] + "\" n'existe pas." });
 			break;
 		}
 		case InstructionType::JUMPEQ:
 		{
-			if ((m_algorithm.lastComparison() & ComparisonResult::EQUAL) == 0b1)
+			if ((m_algorithm.lastComparison() & ComparisonResult::EQUAL) == ComparisonResult::EQUAL)
 			{
 				Function* function = m_algorithm.functionManager->get(m_args[0]);
 				if (function)
@@ -220,7 +224,7 @@ namespace Calculatrice::Algorithm {
 		}
 		case InstructionType::JUMPDI:
 		{
-			if ((m_algorithm.lastComparison() & ComparisonResult::DIFFERENT) == 0b10)
+			if ((m_algorithm.lastComparison() & ComparisonResult::DIFFERENT) == ComparisonResult::DIFFERENT)
 			{
 				Function* function = m_algorithm.functionManager->get(m_args[0]);
 				if (function)
@@ -232,7 +236,7 @@ namespace Calculatrice::Algorithm {
 		}
 		case InstructionType::JUMPGE:
 		{
-			if (((m_algorithm.lastComparison() & ComparisonResult::EQUAL) == 0b1) || ((m_algorithm.lastComparison() & ComparisonResult::GREATER) == 0b100))
+			if (((m_algorithm.lastComparison() & ComparisonResult::EQUAL) == ComparisonResult::EQUAL) || ((m_algorithm.lastComparison() & ComparisonResult::GREATER) == ComparisonResult::GREATER))
 			{
 				Function* function = m_algorithm.functionManager->get(m_args[0]);
 				if (function)
@@ -244,7 +248,7 @@ namespace Calculatrice::Algorithm {
 		}
 		case InstructionType::JUMPGT:
 		{
-			if ((m_algorithm.lastComparison() & ComparisonResult::GREATER) == 0b100)
+			if ((m_algorithm.lastComparison() & ComparisonResult::GREATER) == ComparisonResult::GREATER)
 			{
 				Function* function = m_algorithm.functionManager->get(m_args[0]);
 				if (function)
@@ -256,7 +260,7 @@ namespace Calculatrice::Algorithm {
 		}
 		case InstructionType::JUMPLE:
 		{
-			if (((m_algorithm.lastComparison() & ComparisonResult::EQUAL) == 0b1) || ((m_algorithm.lastComparison() & ComparisonResult::SMALLER) == 0b1000))
+			if (((m_algorithm.lastComparison() & ComparisonResult::EQUAL) == ComparisonResult::EQUAL) || ((m_algorithm.lastComparison() & ComparisonResult::SMALLER) == ComparisonResult::SMALLER))
 			{
 				Function* function = m_algorithm.functionManager->get(m_args[0]);
 				if (function)
@@ -268,7 +272,7 @@ namespace Calculatrice::Algorithm {
 		}
 		case InstructionType::JUMPLT:
 		{
-			if ((m_algorithm.lastComparison() & ComparisonResult::SMALLER) == 0b1000)
+			if ((m_algorithm.lastComparison() & ComparisonResult::SMALLER) == ComparisonResult::SMALLER)
 			{
 				Function* function = m_algorithm.functionManager->get(m_args[0]);
 				if (function)
@@ -334,6 +338,24 @@ namespace Calculatrice::Algorithm {
 
 	int Algorithm::compare(double first, double second)
 	{
+		/*
+			Fonction grâce à l'opération OU
+
+			si "first" est inférieur et égal à "second", alors on aura
+			Exemple :
+				result = 00001001
+
+			Grâce à cela, il nous suffit d'utiliser l'opération AND pour déterminer si la comparaison remplit un critère
+			Exemple :
+				if ((result
+					& ComparisonResult::SMALLER)
+					== ComparisonResult::SMALLER)
+
+				Ce qui revient à 
+				if ((1001
+					& 1000)
+					== 1000)
+		*/
 		int result = 0;
 		if (first == second)
 			result |= ComparisonResult::EQUAL;

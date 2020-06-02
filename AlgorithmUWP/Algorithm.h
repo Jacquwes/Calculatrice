@@ -24,10 +24,10 @@ namespace Calculatrice::Algorithm {
 	// Est utilisable avec des opérations sur les bits pour récupérer facilement le résultat d'une comparaison
 	enum ComparisonResult
 	{
-		EQUAL = 0b1,
-		DIFFERENT = 0b10,
-		GREATER = 0b100,
-		SMALLER = 0b1000,
+		EQUAL = 1 << 0,
+		DIFFERENT = 1 << 1,
+		GREATER = 1 << 2,
+		SMALLER = 1 << 3,
 	};
 
 	// Définition pour les classes Variable, Instruction et Function.
@@ -80,10 +80,16 @@ namespace Calculatrice::Algorithm {
 		std::string m_name;
 	};
 
+	// Désigne un algorithme
 	class Algorithm
 	{
 	public:
-		inline Algorithm(std::function<void(std::string)>& outputFunction) : m_outputFunction(outputFunction), variableManager(new Manager::Manager<Variable>), functionManager(new Manager::Manager<Function>), currentFunction(nullptr) {}
+		inline Algorithm(std::function<void(std::string)>& outputFunction)
+			: m_outputFunction(outputFunction),
+			variableManager(new Manager::Manager<Variable>),
+			functionManager(new Manager::Manager<Function>),
+			currentFunction(nullptr)
+		{}
 
 		void execute();
 
@@ -91,12 +97,14 @@ namespace Calculatrice::Algorithm {
 		Manager::Manager<Function>* functionManager;
 		Function* currentFunction;
 
+		// Pour gérer la pile de valeurs
 		std::string pop();
 		Algorithm* push(std::string value);
 
 		int compare(double first, double second);
 		inline int lastComparison() { return m_lastComparison; }
 
+		// Afficher une valeur par le biais de la fonction voulue
 		inline void log(std::string message) { m_outputFunction(message); }
 	private:
 		int m_lastComparison{};
@@ -104,5 +112,6 @@ namespace Calculatrice::Algorithm {
 		std::vector<std::string> m_stack;
 	};
 
+	// Créer un algorithme à partir de texte
 	Algorithm parseAlgorithm(std::string rawAlgorithm, std::function<void(std::string)>& outputFunction);
 }

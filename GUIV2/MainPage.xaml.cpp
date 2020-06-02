@@ -25,10 +25,13 @@ using namespace Windows::UI::Xaml::Navigation;
 MainPage::MainPage()
 {
 	InitializeComponent();
+
+	// Ajoute tous les boutons sur la fenêtre
 	for (size_t y = 0; y < buttonsText.size(); y++)
 		for (size_t x = 0; x < buttonsText[y].size(); x++)
 		{
 			Object^ currentButtonText = buttonsText[y][x];
+			// Permet de créer des espaces vides entre les boutons
 			if (currentButtonText != "")
 			{
 				Button^ button = ref new Button;
@@ -47,28 +50,33 @@ MainPage::MainPage()
 
 void GUIV2::MainPage::navigationView_SelectionChanged(Windows::UI::Xaml::Controls::NavigationView^ sender, Windows::UI::Xaml::Controls::NavigationViewSelectionChangedEventArgs^ args)
 {
+	// Naviguer vers l'éditeur d'algorithmes
 	Frame->Navigate(Interop::TypeName(Editor::typeid));
 }
 
 void GUIV2::MainPage::calculatorButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs^ e)
 {
+	// Lorsqu'un bouton de la calculatrice est cliqué
 	Button^ button = (Button^)sender;
 	expressions->Text = expressions->Text + button->Content;
 }
 
 void GUIV2::MainPage::solveButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
+	// Résoud l'expression entrée si elle n'est pas vide
 	if (!expressions->Text->IsEmpty())
 		expressions->Text = Utils::stdToPlatformString(std::to_string(Calculatrice::Core::solve(Utils::platformToStdString(expressions->Text))));
 }
 
 void GUIV2::MainPage::eraseButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
+	// Efface l'expression
 	expressions->Text = "";
 }
 
 
 void GUIV2::MainPage::eraseButton_Copy_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
+	// Supprime le dernier caractère de l'expression
 	expressions->Text = Utils::stdToPlatformString(Utils::platformToStdString(expressions->Text).substr(0, Utils::platformToStdString(expressions->Text).size() - 1));
 }

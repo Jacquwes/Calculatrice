@@ -24,6 +24,7 @@ namespace GUIV2
 		void eraseButton_Copy_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 
+	// Boutons de la calculatrice
 	const std::vector<std::vector<Platform::Object^>> buttonsText
 	{
 		{"(", ")", "AND", "NOT"},
