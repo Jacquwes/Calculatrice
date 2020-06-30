@@ -1,7 +1,8 @@
 # Calculatrice
 
-C'est juste une calculatrice.
+Interpréteur d'expressions algébriques et d'algorithmes. Supporte les lois de distributivité et de priorité de calcul.
 
+Réalisée pour UWP.
 
 # Langage ALG
 
